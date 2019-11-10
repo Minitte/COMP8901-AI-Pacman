@@ -17,6 +17,8 @@ public class LevelBuilder : MonoBehaviour
 
                 tileGO.GetComponent<Tile>().coordinate = new Vector2(x, y);
 
+                tileGO.GetComponent<Tile>().tileType = tileMatrix[x, y];
+
                 tileGO.name = string.Format("{0} [{1},{2}]", tilePrefabs[(int)tileMatrix[x, y]].name, x, y);
             }
         }

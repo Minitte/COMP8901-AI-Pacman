@@ -5,4 +5,6 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     public Vector2 coordinate;
+
+    public TileType tileType;
 }
