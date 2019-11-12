@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
+    public delegate void TileDelegate(Tile t);
+
+    // when this character moves on a new tile
+    public event TileDelegate OnNewTile;
+
+    // When this character can't move because it's blocked by a wall
+    public event TileDelegate OnBlocked;
 
     public LevelManager levelManager;
 
@@ -15,7 +22,13 @@ public class CharacterMovement : MonoBehaviour
 
     private void Update()
     {
+        Vector2Int oldCoord = coordinate;
         coordinate = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y));
+
+        if (oldCoord.x == coordinate.x && oldCoord.y == coordinate.y)
+        {
+            OnNewTile?.Invoke(levelManager.GetTile(coordinate));
+        }
 
         levelManager.GetTile(coordinate).ShowDebugLines();
 
@@ -62,6 +75,7 @@ public class CharacterMovement : MonoBehaviour
             if (distToNexTile < 1f)
             {
                 transform.position = new Vector3(coordinate.x, coordinate.y);
+                OnBlocked?.Invoke(levelManager.GetTile(coordinate));
             }
         }
     }

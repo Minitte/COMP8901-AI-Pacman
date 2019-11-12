@@ -29,6 +29,11 @@ public static class LevelReader
         int startY = Convert.ToInt32(header[3]);
         info.playerStart = new UnityEngine.Vector2Int(startX, startY);
 
+        // ghost spawn location
+        int ghostSpawnX = Convert.ToInt32(header[4]);
+        int ghostSpawny = Convert.ToInt32(header[5]);
+        info.ghostSpawn = new UnityEngine.Vector2Int(ghostSpawnX, ghostSpawny);
+
         TileType[,] tileMatrix = new TileType[width, height];
 
         // read level

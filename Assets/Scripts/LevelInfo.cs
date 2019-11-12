@@ -6,6 +6,8 @@ public class LevelInfo
 
     public Vector2Int playerStart;
 
+    public Vector2Int ghostSpawn;
+
     public TileType[,] tiles;
 
     public TileType GetTile(Vector2Int atLocation)

@@ -89,8 +89,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8349042284109548382}
   - component: {fileID: 8349042284109548383}
-  - component: {fileID: 8349042284109548376}
   - component: {fileID: 7719692151387838816}
+  - component: {fileID: 855928266189348401}
   m_Layer: 0
   m_Name: Ghost
   m_TagString: Player
@@ -129,18 +129,6 @@ MonoBehaviour:
   currentDirection: 0
   speed: 4
   coordinate: {x: 1, y: 1}
---- !u!114 &8349042284109548376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8349042284109548381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14332d877d6c16c4fbf0a3e871377e62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!58 &7719692151387838816
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -157,3 +145,15 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.4
+--- !u!114 &855928266189348401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8349042284109548381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 055b95b089e7dbd48a123153cebfe552, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
