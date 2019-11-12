@@ -157,6 +157,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 5528614039819990217, guid: f9be5ea143ac3914dba37c021a92a8f4,
     type: 3}
+  ghostPrefab: {fileID: 8349042284109548381, guid: 7041572d61aa92d41a715656f7e23e5e,
+    type: 3}
   levelManager: {fileID: 911522099}
 --- !u!1 &443255208
 GameObject:

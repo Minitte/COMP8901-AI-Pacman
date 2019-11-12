@@ -10,6 +10,18 @@ public class Tile : MonoBehaviour
 
     public Tile[] neighbours = new Tile[4];
 
+    public int numNeighbours
+    {
+        get {
+            int n = 0;
+            if (neighbours[0] != null) n++;
+            if (neighbours[1] != null) n++;
+            if (neighbours[2] != null) n++;
+            if (neighbours[3] != null) n++;
+            return n;
+        }
+    }
+
     public void SetNeighbour(TileDirection dir, Tile t)
     {
         neighbours[(int)dir] = t;

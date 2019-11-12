@@ -25,7 +25,7 @@ public class CharacterMovement : MonoBehaviour
         Vector2Int oldCoord = coordinate;
         coordinate = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y));
 
-        if (oldCoord.x == coordinate.x && oldCoord.y == coordinate.y)
+        if (oldCoord.x != coordinate.x || oldCoord.y != coordinate.y)
         {
             OnNewTile?.Invoke(levelManager.GetTile(coordinate));
         }
@@ -40,9 +40,7 @@ public class CharacterMovement : MonoBehaviour
         Tile nextTile = levelManager.GetTile(coordinate, dir);
 
         // distance check
-        float dist = Vector2.Distance(transform.position, coordinate);
-
-        if (dist > 0.1f) return false;
+        if (!IsCloseToCenter()) return false;
 
         if (MoveableTile(nextTile))
         {
@@ -51,6 +49,16 @@ public class CharacterMovement : MonoBehaviour
         }
 
         return false;
+    }
+
+    public bool IsCloseToCenter()
+    {
+        // distance check
+        float dist = Vector2.Distance(transform.position, coordinate);
+
+        if (dist > 0.1f) return false;
+
+        return true;
     }
 
     public bool MoveableTile(Tile t)
