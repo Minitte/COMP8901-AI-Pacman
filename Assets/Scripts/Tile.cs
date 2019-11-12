@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    public Vector2 coordinate;
+    public Vector2Int coordinate;
 
     public TileType tileType;
 

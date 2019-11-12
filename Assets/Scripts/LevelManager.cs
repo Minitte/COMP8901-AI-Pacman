@@ -4,14 +4,20 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    public TileType[,] tileMatrix;
+    public Tile[,] tiles;
 
     public LevelBuilder levelBuilder;
 
     private void Awake()
     {
-        tileMatrix = LevelReader.LoadLevel("level0");
+        TileType[,] tileMatrix = LevelReader.LoadLevel("level0");
 
-        levelBuilder.BuildLevel(tileMatrix);
+        tiles = levelBuilder.BuildLevel(tileMatrix);
+    }
+
+
+    public Tile GetTile(Vector2Int atLocation, TileDirection towards)
+    {
+        return tiles[atLocation.x, atLocation.y].neighbours[(int)towards];
     }
 }
