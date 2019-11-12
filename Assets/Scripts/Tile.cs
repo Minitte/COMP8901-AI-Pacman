@@ -15,7 +15,7 @@ public class Tile : MonoBehaviour
         neighbours[(int)dir] = t;
     }
 
-    private void OnMouseOver()
+    public void ShowDebugLines()
     {
         Vector3 pos1 = transform.position;
 

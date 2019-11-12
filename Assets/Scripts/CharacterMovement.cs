@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
-    public enum MovementState
-    {
-        STOPPED,
-        MOVING
-    }
 
     public LevelManager levelManager;
 
@@ -18,22 +13,31 @@ public class CharacterMovement : MonoBehaviour
 
     public Vector2Int coordinate;
 
-    private MovementState m_state;
-
     private void Update()
     {
         coordinate = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y));
 
+        levelManager.GetTile(coordinate).ShowDebugLines();
+
         HandleMoving();
     }
 
-    public Tile TryGetTile(TileDirection dir)
+    public bool TrySetDirection(TileDirection dir)
     {
-        Tile t = levelManager.GetTile(coordinate, currentDirection);
+        Tile nextTile = levelManager.GetTile(coordinate, dir);
 
-        if (!MoveableTile(t)) return null;
+        // distance check
+        float dist = Vector2.Distance(transform.position, coordinate);
 
-        return t;
+        if (dist > 0.1f) return false;
+
+        if (MoveableTile(nextTile))
+        {
+            currentDirection = dir;
+            return true;
+        }
+
+        return false;
     }
 
     public bool MoveableTile(Tile t)

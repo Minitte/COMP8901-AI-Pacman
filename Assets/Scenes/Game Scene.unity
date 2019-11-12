@@ -359,6 +359,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1128840426}
   - component: {fileID: 1128840427}
+  - component: {fileID: 1128840428}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -395,5 +396,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelManager: {fileID: 911522099}
   currentDirection: 0
-  speed: 5
+  speed: 4
   coordinate: {x: 1, y: 1}
+--- !u!114 &1128840428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128840425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14332d877d6c16c4fbf0a3e871377e62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

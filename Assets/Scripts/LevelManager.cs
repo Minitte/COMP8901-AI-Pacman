@@ -15,6 +15,10 @@ public class LevelManager : MonoBehaviour
         tiles = levelBuilder.BuildLevel(tileMatrix);
     }
 
+    public Tile GetTile(Vector2Int atLocation)
+    {
+        return tiles[atLocation.x, atLocation.y];
+    }
 
     public Tile GetTile(Vector2Int atLocation, TileDirection towards)
     {
