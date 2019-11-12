@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
         m_movement = GetComponent<CharacterMovement>();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if (Input.GetKey(KeyCode.W)) m_movement.TrySetDirection(TileDirection.UP);
 

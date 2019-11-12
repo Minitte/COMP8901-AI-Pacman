@@ -6,13 +6,15 @@ public class LevelManager : MonoBehaviour
 {
     public Tile[,] tiles;
 
+    public LevelInfo info;
+
     public LevelBuilder levelBuilder;
 
-    private void Awake()
+    public void BuildAndLoad(string level)
     {
-        TileType[,] tileMatrix = LevelReader.LoadLevel("level0");
+        info = LevelReader.LoadLevel(level);
 
-        tiles = levelBuilder.BuildLevel(tileMatrix);
+        tiles = levelBuilder.BuildLevel(info.tiles);
     }
 
     public Tile GetTile(Vector2Int atLocation)

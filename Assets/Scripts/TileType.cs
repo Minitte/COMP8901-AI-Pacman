@@ -2,5 +2,6 @@
 {
     OPEN = 0,
     WALL = 1,
-    EMPTY = 2
+    EMPTY = 2,
+    NULL = 999
 }
