@@ -5,6 +5,8 @@ using UnityEngine;
 public class CharacterPathfinding : MonoBehaviour
 {
     public LevelInfo levelInfo;
+
+    public Vector2Int destination;
     
     private CharacterMovement m_characterMovement;
 
@@ -14,9 +16,17 @@ public class CharacterPathfinding : MonoBehaviour
 
     private TileDirection m_nextDir;
 
+    private void OnDrawGizmos()
+    {
+        Vector2Int a = m_characterMovement.coordinate;
+        Vector2Int b = destination;
+        Debug.DrawLine(new Vector3(a.x, a.y), new Vector3(b.x, b.y), Color.cyan);
+    }
+
     private void Awake()
     {
         m_characterMovement = GetComponent<CharacterMovement>();
+        destination = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y));
         m_characterMovement.OnNewTile += UpdatePath;
     }
 
@@ -38,6 +48,8 @@ public class CharacterPathfinding : MonoBehaviour
         if (m_path[m_pathIndex] == m_characterMovement.coordinate) m_pathIndex++;
 
         m_nextDir = TileDirectionEnum.Get_TD(m_characterMovement.coordinate, m_path[m_pathIndex]);
+
+        destination = dest;
     }
 
     private void UpdatePath(Tile t)

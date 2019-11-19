@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class GhostAI : MonoBehaviour
 {
+    enum GhostState
+    { 
+        WANDER,
+        CHASE
+    }
+
+    public LevelInfo levelinfo;
+
     public GameObject player;
 
     private CharacterMovement m_characterMovement;
@@ -18,9 +26,6 @@ public class GhostAI : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Alpha1))
-        {
-            m_pathFinder.GoTo(player.GetComponent<CharacterMovement>().coordinate);
-        }
+        
     }
 }
