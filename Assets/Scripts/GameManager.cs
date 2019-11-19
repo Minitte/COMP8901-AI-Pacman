@@ -25,12 +25,17 @@ public class GameManager : MonoBehaviour
 
         Camera.main.GetComponent<FollowGameObject>().target = playerGO;
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 1; i++)
         {
             GameObject ghostGO = Instantiate(ghostPrefab, new Vector3(levelManager.info.ghostSpawn.x, levelManager.info.ghostSpawn.y), Quaternion.identity);
+            
             CharacterMovement movementCompG = ghostGO.GetComponent<CharacterMovement>();
             movementCompG.coordinate = levelManager.info.ghostSpawn;
             movementCompG.levelManager = levelManager;
+
+            ghostGO.GetComponent<GhostAI>().player = playerGO;
+
+            ghostGO.GetComponent<CharacterPathfinding>().levelInfo = levelManager.info;
         }
     }
 }

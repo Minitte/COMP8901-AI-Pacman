@@ -90,7 +90,8 @@ GameObject:
   - component: {fileID: 8349042284109548382}
   - component: {fileID: 8349042284109548383}
   - component: {fileID: 7719692151387838816}
-  - component: {fileID: 855928266189348401}
+  - component: {fileID: 2330320399929195918}
+  - component: {fileID: 2840330297672968972}
   m_Layer: 0
   m_Name: Ghost
   m_TagString: Player
@@ -145,7 +146,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.4
---- !u!114 &855928266189348401
+--- !u!114 &2330320399929195918
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -154,6 +155,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 8349042284109548381}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 055b95b089e7dbd48a123153cebfe552, type: 3}
+  m_Script: {fileID: 11500000, guid: f64c3eb2a5611364dbd31acb993c0935, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2840330297672968972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8349042284109548381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaeb109ad97e68e4b9cb679e6a0f487a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
