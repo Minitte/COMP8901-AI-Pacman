@@ -23,7 +23,7 @@ public class RandomGhostController : MonoBehaviour
             m_changeWhenCenter = false;
             ChangeDir();
         }
-    }
+    }   
 
     private void RandomDirChange(Tile t)
     {
@@ -50,7 +50,7 @@ public class RandomGhostController : MonoBehaviour
 
     private void ChangeDir()
     {
-        TileDirection tryDIr = (TileDirection)(((int)m_movement.currentDirection + Random.Range(0, 3)) % 4);
+        TileDirection tryDIr = (TileDirection)(((int)m_movement.currentDirection + Random.Range(1, 4)) % 4);
 
         while (true)
         {
