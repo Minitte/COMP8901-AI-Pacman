@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
             movementCompG.levelManager = levelManager;
 
             ghostGO.GetComponent<GhostAI>().player = playerGO;
+            ghostGO.GetComponent<GhostAI>().levelinfo = levelManager.info;
 
             ghostGO.GetComponent<CharacterPathfinding>().levelInfo = levelManager.info;
         }
