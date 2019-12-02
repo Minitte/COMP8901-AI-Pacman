@@ -28,15 +28,16 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < 1; i++)
         {
             GameObject ghostGO = Instantiate(ghostPrefab, new Vector3(levelManager.info.ghostSpawn.x, levelManager.info.ghostSpawn.y), Quaternion.identity);
-            
-            CharacterMovement movementCompG = ghostGO.GetComponent<CharacterMovement>();
+
+            GridCharacterMovement movementCompG = ghostGO.GetComponent<GridCharacterMovement>();
             movementCompG.coordinate = levelManager.info.ghostSpawn;
             movementCompG.levelManager = levelManager;
+            movementCompG.GoTo(levelManager.info.ghostSpawn);
 
             ghostGO.GetComponent<GhostAI>().player = playerGO;
             ghostGO.GetComponent<GhostAI>().levelinfo = levelManager.info;
 
-            ghostGO.GetComponent<CharacterPathfinding>().levelInfo = levelManager.info;
+            ghostGO.GetComponent<GridCharacterPathFinding>().levelInfo = levelManager.info;
         }
     }
 }

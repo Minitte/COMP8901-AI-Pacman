@@ -20,7 +20,7 @@ public class CharacterMovement : MonoBehaviour
 
     public Vector2Int coordinate;
 
-    private void Update()
+    private void FixedUpdate()
     {
         Vector2Int oldCoord = coordinate;
         coordinate = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y));

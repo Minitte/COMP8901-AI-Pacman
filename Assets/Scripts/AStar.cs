@@ -54,8 +54,10 @@ namespace PathFinding
                 prev = cur;
             }
 
-            Debug.Assert(came_from.ContainsKey(start), end);
-            Debug.Assert(came_from.ContainsKey(end), end);
+            if (!came_from.ContainsKey(end) || !came_from.ContainsKey(start))
+            {
+                return null;
+            }
 
             return ConstructPath(came_from, start, end);
         }
