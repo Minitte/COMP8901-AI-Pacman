@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 8349042284109548382}
   - component: {fileID: 7719692151387838816}
   - component: {fileID: 2840330297672968972}
+  - component: {fileID: 6070329865485929484}
   - component: {fileID: 9064640702656223822}
   - component: {fileID: 1738900941040136429}
   m_Layer: 0
@@ -143,6 +144,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  characterMovement: {fileID: 0}
+  pathFinder: {fileID: 0}
+--- !u!114 &6070329865485929484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8349042284109548381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b97878b71dcd1974eaa7665cf9792418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   chaseDistance: 4
 --- !u!114 &9064640702656223822
 MonoBehaviour:
