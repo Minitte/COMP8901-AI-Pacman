@@ -2,26 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FSM_Wander : FSM_State
+namespace FSM
 {
-    private LevelInfo m_levelInfo;
-
-    private GameObject m_self;
-
-    public FSM_Wander(LevelInfo levelInfo, GameObject self)
+    public class FSM_Wander : FSM_State
     {
-        m_levelInfo = levelInfo;
-        m_self = self;
-    }
+        private LevelInfo m_levelInfo;
 
-    public void CleanUp()
-    {
-        m_levelInfo = null;
-        m_self = null;
-    }
+        private GameObject m_self;
 
-    public void Handle()
-    {
-        
+        public FSM_Wander(LevelInfo levelInfo, GameObject self)
+        {
+            m_levelInfo = levelInfo;
+            m_self = self;
+        }
+
+        public void CleanUp()
+        {
+            m_levelInfo = null;
+            m_self = null;
+        }
+
+        public void Handle()
+        {
+
+        }
     }
 }
