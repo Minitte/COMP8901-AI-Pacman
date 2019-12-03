@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
         movementComp.coordinate = levelManager.info.playerStart;
         movementComp.levelManager = levelManager;
 
-        Camera.main.GetComponent<FollowGameObject>().target = playerGO;
+        //Camera.main.GetComponent<FollowGameObject>().target = playerGO;
     }
 
     private void InitGhost()
