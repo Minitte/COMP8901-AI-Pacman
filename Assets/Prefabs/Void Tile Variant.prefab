@@ -10,7 +10,12 @@ PrefabInstance:
     - target: {fileID: 2362125767486314277, guid: a69477917bb339049bbe4a61863d56d7,
         type: 3}
       propertyPath: m_Name
-      value: Empty Tile Variant
+      value: Void Tile Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 124543382603873406, guid: a69477917bb339049bbe4a61863d56d7,
+        type: 3}
+      propertyPath: tileType
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2292625949425635053, guid: a69477917bb339049bbe4a61863d56d7,
         type: 3}
@@ -67,15 +72,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7612743618596712274, guid: a69477917bb339049bbe4a61863d56d7,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0.16862746
-      objectReference: {fileID: 0}
     - target: {fileID: 5652727706449306812, guid: a69477917bb339049bbe4a61863d56d7,
         type: 3}
       propertyPath: m_Color.a
       value: 0.09019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 7612743618596712274, guid: a69477917bb339049bbe4a61863d56d7,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.16862746
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a69477917bb339049bbe4a61863d56d7, type: 3}
