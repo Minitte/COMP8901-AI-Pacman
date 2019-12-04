@@ -3,6 +3,8 @@ namespace ANN
 {
     class ArtificalNerualNetwork
     {
+        public float gainTerm = 0.2f;
+
         private Neuron[][] neurons;
 
         private int layerCount { get { return neurons.Length; } }
@@ -36,8 +38,8 @@ namespace ANN
 
                     for (int w = 0; w < neurons[layer][n].weights.Length; w++)
                     {
-                        //neurons[layer][n].weights[w] = (float)(rand.Next(0, 10) - 5) / 100f;
-                        neurons[layer][n].weights[w] = 0.5f;
+                        neurons[layer][n].weights[w] = (float)(rand.Next(0, 10) - 5) / 100f;
+                        //neurons[layer][n].weights[w] = 0.5f;
                     }
                 }
             }
@@ -53,6 +55,18 @@ namespace ANN
             // input must be same length as input layer
             UnityEngine.Debug.Assert(input.Length == neurons[0].Length);
 
+            float[][] results = Forward2(input);
+
+            return results[layerCount - 1];
+        }
+
+        /// <summary>
+        /// Feeds the input forward through the network
+        /// </summary>
+        /// <param name="input">Input values for the input layer</param>
+        /// <returns>The 2d array of values of all layers</returns>
+        public float[][] Forward2(float[] input)
+        {
             float[][] results = CreateResultArray();
 
             results[0] = input;
@@ -79,7 +93,41 @@ namespace ANN
                 results[layer + 1] = sum;
             }
 
-            return results[layerCount - 1];
+            return results;
+        }
+
+        public void Train(float[] input, float[] expected)
+        {
+            // input must be same length as input layer
+            UnityEngine.Debug.Assert(input.Length == neurons[0].Length);
+
+            // expected must be same length as output layer
+            UnityEngine.Debug.Assert(expected.Length == neurons[layerCount - 1].Length);
+
+            // perform forward/eval
+            float[][] results = Forward2(input);
+
+            // for each output
+            for (int o = 0; o < outputLayer.Length; o++)
+            {
+                float error = expected[o] - results[layerCount - 1][o];
+
+                BackProp(layerCount - 1, o, error, results);
+            }
+        }
+
+        private void BackProp(int layerIndex, int neuronIndex, float error, float[][] results)
+        {
+            if (layerIndex <= 1) return;
+
+            Neuron[] prevLayer = neurons[layerIndex - 1];
+
+            for (int n = 0; n < prevLayer.Length; n++)
+            {
+                prevLayer[n].weights[neuronIndex] += gainTerm * error * results[layerIndex][neuronIndex];
+
+                BackProp(layerIndex - 1, n, error, results);
+            }
         }
 
         /// <summary>
