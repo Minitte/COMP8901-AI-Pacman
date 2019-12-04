@@ -3,7 +3,7 @@ namespace ANN
 {
     class ArtificalNerualNetwork
     {
-        public float gainTerm = 0.2f;
+        public float gainTerm = 0.5f;
 
         private Neuron[][] neurons;
 
@@ -32,14 +32,15 @@ namespace ANN
                     neurons[layer][n] = new Neuron();
 
                     // create weights if not output layer
-                    if (n + 1 >= structure.Length) continue;
+                    if (layer + 1 >= structure.Length) continue;
 
-                    neurons[layer][n].weights = new float[structure[n + 1]];
+                    neurons[layer][n].weights = new float[structure[layer + 1]];
 
                     for (int w = 0; w < neurons[layer][n].weights.Length; w++)
                     {
-                        neurons[layer][n].weights[w] = (float)(rand.Next(0, 10) - 5) / 100f;
-                        //neurons[layer][n].weights[w] = 0.5f;
+                        //neurons[layer][n].weights[w] = (float)(rand.Next(0, 10) - 5) / 100f;
+                        neurons[layer][n].weights[w] = 0.0f;
+                        //neurons[layer][n].weights[w] = (float)(rand.Next(0, 100)) / 100f;
                     }
                 }
             }
@@ -88,12 +89,25 @@ namespace ANN
                 }
 
                 // apply activation function
-                ApplyActivationFunction(sum, 1.0f);
+                ApplyActivationFunction(sum, 1.5f);
 
                 results[layer + 1] = sum;
             }
 
             return results;
+        }
+
+        public void Train(params TrainingItem[] items)
+        {
+            for (int i = 0; i < items.Length; i++)
+            {
+                Train(items[i].input, items[i].expected); 
+            }
+        }
+
+        public void Train(TrainingItem item)
+        {
+            Train(item.input, item.expected);
         }
 
         public void Train(float[] input, float[] expected)
@@ -112,19 +126,22 @@ namespace ANN
             {
                 float error = expected[o] - results[layerCount - 1][o];
 
+                // if the error is less than 0.01, skip
+                if (UnityEngine.Mathf.Abs(error) < 0.01f) continue;
+
                 BackProp(layerCount - 1, o, error, results);
             }
         }
 
         private void BackProp(int layerIndex, int neuronIndex, float error, float[][] results)
         {
-            if (layerIndex <= 1) return;
+            if (layerIndex <= 0) return;
 
             Neuron[] prevLayer = neurons[layerIndex - 1];
 
             for (int n = 0; n < prevLayer.Length; n++)
             {
-                prevLayer[n].weights[neuronIndex] += gainTerm * error * results[layerIndex][neuronIndex];
+                prevLayer[n].weights[neuronIndex] += gainTerm * error * results[layerIndex - 1][n];
 
                 BackProp(layerIndex - 1, n, error, results);
             }
@@ -175,6 +192,19 @@ namespace ANN
 
                 return results;
             }
+        }
+    }
+
+    struct TrainingItem
+    {
+        public float[] input;
+
+        public float[] expected;
+
+        public TrainingItem(float[] input, float[] expected)
+        {
+            this.input = input;
+            this.expected = expected;
         }
     }
 
