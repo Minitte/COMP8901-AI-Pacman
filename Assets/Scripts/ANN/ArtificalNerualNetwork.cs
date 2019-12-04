@@ -5,13 +5,13 @@ namespace ANN
     {
         private Neuron[][] neurons;
 
-        private int layerCount;
+        private int layerCount { get { return neurons.Length; } }
 
         private Neuron[] inputLayer { get { return neurons[0]; } }
 
         private Neuron[] outputLayer { get { return neurons[layerCount - 1]; } }
 
-        public ArtificalNerualNetwork(int[][] structure)
+        public ArtificalNerualNetwork(int[] structure)
         {
             // must be atleast 2 layers
             UnityEngine.Debug.Assert(structure.Length >= 2);
@@ -22,27 +22,32 @@ namespace ANN
             for (int layer = 0; layer < structure.Length; layer++)
             {
                 // create layer
-                neurons[layer] = new Neuron[structure[layer].Length];
+                neurons[layer] = new Neuron[structure[layer]];
 
                 // create neuron in layer
-                for (int n = 0; n < structure[layer].Length; n++)
+                for (int n = 0; n < structure[layer]; n++)
                 {
                     neurons[layer][n] = new Neuron();
 
                     // create weights if not output layer
                     if (n + 1 >= structure.Length) continue;
 
-                    neurons[layer][n].weights = new float[structure[n + 1].Length];
+                    neurons[layer][n].weights = new float[structure[n + 1]];
 
                     for (int w = 0; w < neurons[layer][n].weights.Length; w++)
                     {
                         //neurons[layer][n].weights[w] = (float)(rand.Next(0, 10) - 5) / 100f;
-                        neurons[layer][n].weights[w] = 0f;
+                        neurons[layer][n].weights[w] = 0.5f;
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// Feeds the input forward through the network
+        /// </summary>
+        /// <param name="input">Input values for the input layer</param>
+        /// <returns>The array of values of the output layer</returns>
         public float[] Forward(float[] input)
         {
             // input must be same length as input layer
@@ -53,7 +58,7 @@ namespace ANN
             results[0] = input;
 
             // start at layer 0 (input)
-            for (int layer = 0; layer < neurons.Length - 1; layer++)
+            for (int layer = 0; layer < layerCount - 1; layer++)
             {
                 float[] sum = new float[neurons[layer + 1].Length];
 
@@ -77,15 +82,24 @@ namespace ANN
             return results[layerCount - 1];
         }
 
+        /// <summary>
+        /// Applies activation function
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <param name="upper"></param>
         private void ApplyActivationFunction(float[] arr, float upper)
         {
             for (int i = 0; i < arr.Length; i++)
             {
-                if (arr[i] > upper) arr[i] = 1;
+                if (arr[i] >= upper) arr[i] = 1;
                 else arr[i] = 0;
             }
         }
 
+        /// <summary>
+        /// Creates array with the dimensions for layer outputs of network
+        /// </summary>
+        /// <returns></returns>
         private float[][] CreateResultArray()
         {
             float[][] arr = new float[layerCount][];
