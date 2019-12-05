@@ -42,6 +42,13 @@ public class ShooterController : MonoBehaviour
 
     public bool HasHealth { get { return health != 0; } }
 
+    private Animator m_animator;
+
+    private void Awake()
+    {
+        m_animator = GetComponent<Animator>();   
+    }
+
     public void AddAmmo()
     {
         if (ammoCount >= MAX_AMMO) return;
@@ -106,5 +113,11 @@ public class ShooterController : MonoBehaviour
             if (i < health) healthSprites[i].color = Color.red;
             else healthSprites[i].color = Color.black;
         }
+    }
+
+    public void RunAnimation(ShooterChoice choice)
+    {
+        m_animator.SetInteger("Choice", (int)choice);
+        m_animator.SetTrigger("Act");
     }
 }

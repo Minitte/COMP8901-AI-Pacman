@@ -106,6 +106,8 @@ public class ShooterGameManager : MonoBehaviour
                 controller.AddEnergy();
                 break;
         }
+
+        controller.RunAnimation(choice);
     }
 
     private void PostActPhase()
