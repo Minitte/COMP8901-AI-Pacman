@@ -12,6 +12,8 @@ public class GhostAI : MonoBehaviour
 
     public GridCharacterPathFinding pathFinder;
 
+    public Vector2Int coordinate { get { return characterMovement.coordinate; } }
+
     private void Awake()
     {
         characterMovement = GetComponent<GridCharacterMovement>();

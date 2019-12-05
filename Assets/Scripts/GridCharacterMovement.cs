@@ -19,7 +19,7 @@ public class GridCharacterMovement : MonoBehaviour
 
     private Vector2Int m_targetCoord;
 
-    private float m_lerpFactor;
+    private float m_lerpFactor = 1;
 
     private void Update()
     {
@@ -39,6 +39,8 @@ public class GridCharacterMovement : MonoBehaviour
 
     public void GoTo(Vector2Int target)
     {
+        if (levelManager.info.GetTile(target) == TileType.WALL) return;
+
         if (coordinate == target)
         {
             OnArrive?.Invoke(levelManager.GetTile(coordinate));

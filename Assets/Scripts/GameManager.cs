@@ -52,9 +52,10 @@ public class GameManager : MonoBehaviour
     private void InitPlayer()
     {
         playerGO = Instantiate(playerPrefab, new Vector3(levelManager.info.playerStart.x, levelManager.info.playerStart.y), Quaternion.identity);
-        CharacterMovement movementComp = playerGO.GetComponent<CharacterMovement>();
+        GridCharacterMovement movementComp = playerGO.GetComponent<GridCharacterMovement>();
         movementComp.coordinate = levelManager.info.playerStart;
         movementComp.levelManager = levelManager;
+        movementComp.GoTo(movementComp.coordinate);
 
         //Camera.main.GetComponent<FollowGameObject>().target = playerGO;
     }
