@@ -18,11 +18,17 @@ public class ShooterGameManager : MonoBehaviour
 
     private GamePhase m_phase;
 
+    private void Awake()
+    {
+        ResetGame();
+    }
+
     private void Update()
     {
         if (m_phase == GamePhase.CHOICE) ChoicePhase();
         else if (m_phase == GamePhase.ACT) ActPhase();
         else if (m_phase == GamePhase.POSTACT) PostActPhase();
+        else if (m_phase == GamePhase.END) EndPhase();
     }
 
     private void ChoicePhase()
@@ -47,16 +53,16 @@ public class ShooterGameManager : MonoBehaviour
     private void ActPhase()
     {
         // resolve shooting
-        if (playerOneChoice == ShooterChoice.SHOOT)
+        if (playerOneChoice == ShooterChoice.SHOOT && playerTwoChoice != ShooterChoice.DODGE)
         {
             if (playerOne.ammoCount >= 1) playerTwo.subtractHealth();
-            if (playerOne.ammoCount >= 2) playerTwo.subtractHealth();
+            //if (playerOne.ammoCount >= 2) playerTwo.subtractHealth();
         }
 
-        if (playerTwoChoice == ShooterChoice.SHOOT)
+        if (playerTwoChoice == ShooterChoice.SHOOT && playerOneChoice != ShooterChoice.DODGE)
         {
             if (playerTwo.ammoCount >= 1) playerOne.subtractHealth();
-            if (playerTwo.ammoCount >= 2) playerOne.subtractHealth();
+            //if (playerTwo.ammoCount >= 2) playerOne.subtractHealth();
         }
 
         UpdateController(playerOne, playerOneChoice);
@@ -114,7 +120,27 @@ public class ShooterGameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            endText.text = "";
+            ResetGame();
+
+            m_phase = GamePhase.CHOICE;
         }
+    }
+
+    private void ResetGame()
+    {
+        playerOne.ammoCount = 1;
+        playerOne.energyCount = 2;
+        playerOne.health = 2;
+        playerOne.UpdateSprites();
+
+        playerTwo.ammoCount = 1;
+        playerTwo.energyCount = 2;
+        playerTwo.health = 2;
+        playerTwo.UpdateSprites();
+
+        playerOneChoice = ShooterChoice.WAITING;
+        playerTwoChoice = ShooterChoice.WAITING;
+
+        endText.text = "";
     }
 }

@@ -42,11 +42,6 @@ public class ShooterController : MonoBehaviour
 
     public bool HasHealth { get { return health != 0; } }
 
-    private void Awake()
-    {
-        UpdateSprites();
-    }
-
     public void AddAmmo()
     {
         if (ammoCount >= MAX_AMMO) return;
@@ -96,7 +91,7 @@ public class ShooterController : MonoBehaviour
     {
         for (int i = 0; i < ammoSprites.Length; i++)
         {
-            if (i < energyCount) ammoSprites[i].color = Color.yellow;
+            if (i < ammoCount) ammoSprites[i].color = Color.yellow;
             else ammoSprites[i].color = Color.black;
         }
 
