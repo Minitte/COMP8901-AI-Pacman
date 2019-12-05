@@ -17,13 +17,6 @@ public class Player : MonoBehaviour
 
     private void LateUpdate()
     {
-        //if (Input.GetKey(KeyCode.W)) m_movement.TrySetDirection(TileDirection.UP);
-
-        //if (Input.GetKey(KeyCode.S)) m_movement.TrySetDirection(TileDirection.DOWN);
-
-        //if (Input.GetKey(KeyCode.D)) m_movement.TrySetDirection(TileDirection.RIGHT);
-
-        //if (Input.GetKey(KeyCode.A)) m_movement.TrySetDirection(TileDirection.LEFT);
 
         if (Input.GetKey(KeyCode.W)) m_inputDir = TileDirection.UP;
         else if (Input.GetKey(KeyCode.D)) m_inputDir = TileDirection.RIGHT;
