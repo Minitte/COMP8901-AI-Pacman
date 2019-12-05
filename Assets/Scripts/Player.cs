@@ -10,9 +10,12 @@ public class Player : MonoBehaviour
 
     private TileDirection m_inputDir;
 
+    private PlayerLearner_ANN pl_ann;
+
     private void Awake()
     {
         m_movement = GetComponent<GridCharacterMovement>();
+        pl_ann = GetComponent<PlayerLearner_ANN>();
     }
 
     private void LateUpdate()
@@ -34,6 +37,8 @@ public class Player : MonoBehaviour
         if (!m_movement.isMoving && m_inputDir != TileDirection.NONE)
         {
             m_movement.GoTo(coordinate + TileDirectionVec2.Get_V2I(m_inputDir));
+
+            if (pl_ann != null) pl_ann.PredictAndTrain(m_inputDir);
         }
     }
 }

@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject playerGO;
 
+    public GhostAI[] ghosts;
+
     public int score;
 
     public Text scoreText;
@@ -30,6 +32,8 @@ public class GameManager : MonoBehaviour
         InitPlayer();
 
         InitGhost();
+
+        SetupPlayerLearning();
 
         scoreText.text = score + "pt";
 
@@ -62,7 +66,9 @@ public class GameManager : MonoBehaviour
 
     private void InitGhost()
     {
-        for (int i = 0; i < 1; i++)
+        ghosts = new GhostAI[3];
+
+        for (int i = 0; i < 3; i++)
         {
             GameObject ghostGO = Instantiate(ghostPrefab, new Vector3(levelManager.info.ghostSpawn.x, levelManager.info.ghostSpawn.y), Quaternion.identity);
 
@@ -71,10 +77,26 @@ public class GameManager : MonoBehaviour
             movementCompG.levelManager = levelManager;
             movementCompG.GoTo(levelManager.info.ghostSpawn);
 
-            ghostGO.GetComponent<GhostAI>().player = playerGO;
-            ghostGO.GetComponent<GhostAI>().levelinfo = levelManager.info;
+            GhostAI ghostAIComp = ghostGO.GetComponent<GhostAI>();
+            ghostAIComp.player = playerGO;
+            ghostAIComp.levelinfo = levelManager.info;
 
             ghostGO.GetComponent<GridCharacterPathFinding>().levelInfo = levelManager.info;
+
+            ghosts[i] = ghostAIComp;
         }
+    }
+
+    private void SetupPlayerLearning()
+    {
+        PlayerLearner_ANN pl_ann = playerGO.GetComponent<PlayerLearner_ANN>();
+
+        if (pl_ann == null) return;
+
+        pl_ann.ghosts = ghosts;
+
+        pl_ann.info = levelManager.info;
+
+        pl_ann.InitANN();
     }
 }
