@@ -14,6 +14,16 @@ namespace NGram
             m_combos = new Dictionary<string, NGramSet>();
         }
 
+        public NGramString(string json)
+        {
+            NGramSetJsonCombos jsonObj = UnityEngine.JsonUtility.FromJson<NGramSetJsonCombos>(json);
+
+            foreach (NGramSet set in jsonObj.sets)
+            {
+                m_combos.Add(set.before, set);
+            }
+        }
+
         public void Add(string before, string after)
         {
             before = before.ToLower();
@@ -54,54 +64,77 @@ namespace NGram
             return best_before;
         }
 
-        class NGramSet
+        public string ToJson()
         {
-            public string before;
+            List<NGramSet> arr = new List<NGramSet>();
 
-            private List<string> afterList;
-
-            private List<int> countList;
-
-            public NGramSet(string before)
+            int i = 0;
+            foreach (NGramSet set in m_combos.Values)
             {
-                this.before = before;
-
-                afterList = new List<string>();
-                countList = new List<int>();
+                arr.Add(set);
             }
 
-            public void Add(string after)
+            NGramSetJsonCombos jsonObj = new NGramSetJsonCombos();
+            jsonObj.sets = arr;
+
+            return UnityEngine.JsonUtility.ToJson(jsonObj);
+        }
+    }
+
+    [System.Serializable]
+    public class NGramSet
+    {
+        public string before;
+
+        private List<string> afterList;
+
+        private List<int> countList;
+
+        public NGramSet(string before)
+        {
+            this.before = before;
+
+            afterList = new List<string>();
+            countList = new List<int>();
+        }
+
+        public void Add(string after)
+        {
+            if (afterList.Contains(after))
             {
-                if (afterList.Contains(after))
-                {
-                    int index = afterList.IndexOf(after);
-                    countList[index] = countList[index] + 1;
-                }
-                else
-                {
-                    afterList.Add(after);
-                    countList.Add(1);
-                }
+                int index = afterList.IndexOf(after);
+                countList[index] = countList[index] + 1;
             }
-
-            public string GetHighestProp()
+            else
             {
-                string best_after = afterList[0];
-                float best_prop = (float)countList[0] / (float)countList.Count;
-
-                for (int i = 0; i < afterList.Count; i++)
-                {
-                    float prop = (float)countList[i] / (float)countList.Count;
-
-                    if (prop > best_prop)
-                    {
-                        best_prop = prop;
-                        best_after = afterList[i];
-                    }
-                }
-
-                return best_after;
+                afterList.Add(after);
+                countList.Add(1);
             }
         }
+
+        public string GetHighestProp()
+        {
+            string best_after = afterList[0];
+            float best_prop = (float)countList[0] / (float)countList.Count;
+
+            for (int i = 0; i < afterList.Count; i++)
+            {
+                float prop = (float)countList[i] / (float)countList.Count;
+
+                if (prop > best_prop)
+                {
+                    best_prop = prop;
+                    best_after = afterList[i];
+                }
+            }
+
+            return best_after;
+        }
+    }
+
+    [System.Serializable]
+    public class NGramSetJsonCombos
+    {
+        public List<NGramSet> sets;
     }
 }

@@ -78,7 +78,7 @@ public class ShooterController : MonoBehaviour
 
     public void SubtractEnergy()
     {
-        if (ammoCount <= 0) return;
+        if (energyCount <= 0) return;
 
         energyCount--;
 

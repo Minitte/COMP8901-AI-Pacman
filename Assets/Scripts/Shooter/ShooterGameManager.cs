@@ -4,6 +4,10 @@ using UnityEngine.UI;
 
 public class ShooterGameManager : MonoBehaviour
 {
+    public delegate void EmptyDelegate();
+
+    public event EmptyDelegate OnActPhase;
+
     public ShooterController playerOne;
 
     public ShooterController playerTwo;
@@ -14,12 +18,17 @@ public class ShooterGameManager : MonoBehaviour
 
     public Text endText;
 
+    public Text nGramStatus;
+
     private enum GamePhase { CHOICE, ACT, POSTACT, END }
 
     private GamePhase m_phase;
 
+    private ShooterNGramController m_ngramControler;
+
     private void Awake()
     {
+        m_ngramControler = GetComponent<ShooterNGramController>();
         ResetGame();
     }
 
@@ -33,15 +42,34 @@ public class ShooterGameManager : MonoBehaviour
 
     private void ChoicePhase()
     {
+        
         // player 1 choice
         if (Input.GetKeyDown(KeyCode.Alpha1) && playerOne.HasAmmo) playerOneChoice = ShooterChoice.SHOOT;
         else if (Input.GetKeyDown(KeyCode.Alpha2) && playerOne.HasEnergy) playerOneChoice = ShooterChoice.DODGE;
         else if (Input.GetKeyDown(KeyCode.Alpha3)) playerOneChoice = ShooterChoice.RELOAD;
 
         // Player 2 choice
-        if (Input.GetKeyDown(KeyCode.Alpha8) && playerTwo.HasAmmo) playerTwoChoice = ShooterChoice.SHOOT;
-        else if (Input.GetKeyDown(KeyCode.Alpha9) && playerTwo.HasEnergy) playerTwoChoice = ShooterChoice.DODGE;
-        else if (Input.GetKeyDown(KeyCode.Alpha0)) playerTwoChoice = ShooterChoice.RELOAD;
+        //if (Input.GetKeyDown(KeyCode.Alpha8) && playerTwo.HasAmmo) playerTwoChoice = ShooterChoice.SHOOT;
+        //else if (Input.GetKeyDown(KeyCode.Alpha9) && playerTwo.HasEnergy) playerTwoChoice = ShooterChoice.DODGE;
+        //else if (Input.GetKeyDown(KeyCode.Alpha0)) playerTwoChoice = ShooterChoice.RELOAD;
+
+        if (playerTwoChoice == ShooterChoice.WAITING)
+        {
+            playerTwoChoice = m_ngramControler.MakePrediction(false);
+
+            if (playerTwoChoice == ShooterChoice.WAITING)
+            {
+                nGramStatus.text = "Unable to make prediction!";
+                playerTwoChoice = (ShooterChoice)Random.Range(1, 4);
+
+                if (playerTwoChoice == ShooterChoice.SHOOT && !playerTwo.HasAmmo) playerTwoChoice = ShooterChoice.WAITING;
+                if (playerTwoChoice == ShooterChoice.DODGE && !playerTwo.HasEnergy) playerTwoChoice = ShooterChoice.WAITING;
+            }
+            else
+            {
+                nGramStatus.text = "Able to make prediction!";
+            }
+        }
 
         if (playerOneChoice != ShooterChoice.WAITING && playerTwoChoice != ShooterChoice.WAITING)
         {
@@ -52,6 +80,8 @@ public class ShooterGameManager : MonoBehaviour
 
     private void ActPhase()
     {
+        OnActPhase?.Invoke();
+
         // resolve shooting
         if (playerOneChoice == ShooterChoice.SHOOT && playerTwoChoice != ShooterChoice.DODGE)
         {
