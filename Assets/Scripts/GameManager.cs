@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        levelManager.BuildAndLoad("level0");
+        levelManager.BuildAndLoad("level2");
 
         InitPlayer();
 
