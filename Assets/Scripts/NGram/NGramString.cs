@@ -26,6 +26,7 @@ namespace NGram
             else
             {
                 m_combos.Add(before, new NGramSet(before));
+                m_combos[before].Add(after);
             }
 
             m_total++;
@@ -41,7 +42,7 @@ namespace NGram
             foreach (string s in m_combos.Keys)
             {
                 // does not apply so skip.
-                if (before.StartsWith(s)) continue;
+                if (!before.StartsWith(s)) continue;
 
                 // current best is more specific
                 if (best_matchLength > s.Length) continue;
