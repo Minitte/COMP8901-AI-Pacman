@@ -164,7 +164,7 @@ public class ShooterGameManager : MonoBehaviour
     {
         m_time += Time.deltaTime;
 
-        if (m_time > 1) return;
+        if (m_time < 1) return;
 
         m_time = 0;
 
@@ -178,7 +178,7 @@ public class ShooterGameManager : MonoBehaviour
     {
         m_time += Time.deltaTime;
 
-        if (m_time > 2) return;
+        if (m_time < 2) return;
 
         m_time = 0;
 
