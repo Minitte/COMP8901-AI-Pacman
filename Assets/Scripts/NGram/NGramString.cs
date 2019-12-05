@@ -16,15 +16,16 @@ namespace NGram
 
         public void Add(string before, string after)
         {
-            string combo = before + COMBO_SPILTER + after;
+            before = before.ToLower();
+            after = after.ToLower();
 
-            if (m_combos.ContainsKey(combo))
+            if (m_combos.ContainsKey(before))
             {
-                m_combos[combo].Add(after);
+                m_combos[before].Add(after);
             }
             else
             {
-                m_combos.Add(combo, new NGramSet(before));
+                m_combos.Add(before, new NGramSet(before));
             }
 
             m_total++;
@@ -32,6 +33,8 @@ namespace NGram
 
         public string Predict(string before)
         {
+            before = before.ToLower();
+
             string best_before = "";
             int best_matchLength = 0;
 
