@@ -1,6 +1,7 @@
 ﻿
 namespace ANN
 {
+    [System.Serializable]
     class ArtificalNerualNetwork
     {
         /// <summary>
@@ -212,6 +213,7 @@ namespace ANN
             return arr;
         }
 
+        [System.Serializable]
         class Neuron
         {
             /// <summary>
@@ -238,6 +240,7 @@ namespace ANN
         }
     }
 
+    [System.Serializable]
     struct TrainingItem
     {
         public float[] input;
