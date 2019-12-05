@@ -9,7 +9,7 @@ namespace NGram
 
         private int m_total;
 
-        NGramString()
+        public NGramString()
         {
             m_combos = new Dictionary<string, NGramSet>();
         }
