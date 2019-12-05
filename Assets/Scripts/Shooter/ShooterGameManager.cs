@@ -26,6 +26,8 @@ public class ShooterGameManager : MonoBehaviour
 
     private ShooterNGramController m_ngramControler;
 
+    private float m_time;
+
     private void Awake()
     {
         m_ngramControler = GetComponent<ShooterNGramController>();
@@ -42,11 +44,29 @@ public class ShooterGameManager : MonoBehaviour
 
     private void ChoicePhase()
     {
-        
+
         // player 1 choice
-        if (Input.GetKeyDown(KeyCode.Alpha1) && playerOne.HasAmmo) playerOneChoice = ShooterChoice.SHOOT;
-        else if (Input.GetKeyDown(KeyCode.Alpha2) && playerOne.HasEnergy) playerOneChoice = ShooterChoice.DODGE;
-        else if (Input.GetKeyDown(KeyCode.Alpha3)) playerOneChoice = ShooterChoice.RELOAD;
+        //if (Input.GetKeyDown(KeyCode.Alpha1) && playerOne.HasAmmo) playerOneChoice = ShooterChoice.SHOOT;
+        //else if (Input.GetKeyDown(KeyCode.Alpha2) && playerOne.HasEnergy) playerOneChoice = ShooterChoice.DODGE;
+        //else if (Input.GetKeyDown(KeyCode.Alpha3)) playerOneChoice = ShooterChoice.RELOAD;
+
+        if (playerOneChoice == ShooterChoice.WAITING)
+        {
+            playerOneChoice = m_ngramControler.MakePrediction(false);
+
+            if (playerOneChoice == ShooterChoice.WAITING)
+            {
+                nGramStatus.text = "Unable to make prediction!";
+                playerOneChoice = (ShooterChoice)Random.Range(1, 4);
+
+                if (playerOneChoice == ShooterChoice.SHOOT && !playerOne.HasAmmo) playerOneChoice = ShooterChoice.WAITING;
+                if (playerOneChoice == ShooterChoice.DODGE && !playerOne.HasEnergy) playerOneChoice = ShooterChoice.WAITING;
+            }
+            else
+            {
+                nGramStatus.text = "Able to make prediction!";
+            }
+        }
 
         // Player 2 choice
         //if (Input.GetKeyDown(KeyCode.Alpha8) && playerTwo.HasAmmo) playerTwoChoice = ShooterChoice.SHOOT;
@@ -142,6 +162,12 @@ public class ShooterGameManager : MonoBehaviour
 
     private void PostActPhase()
     {
+        m_time += Time.deltaTime;
+
+        if (m_time > 1) return;
+
+        m_time = 0;
+
         playerOneChoice = ShooterChoice.WAITING;
         playerTwoChoice = ShooterChoice.WAITING;
 
@@ -150,12 +176,18 @@ public class ShooterGameManager : MonoBehaviour
 
     private void EndPhase()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ResetGame();
+        m_time += Time.deltaTime;
 
-            m_phase = GamePhase.CHOICE;
-        }
+        if (m_time > 2) return;
+
+        m_time = 0;
+
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        ResetGame();
+
+        m_phase = GamePhase.CHOICE;
+        //}
     }
 
     private void ResetGame()
