@@ -3,15 +3,30 @@ namespace ANN
 {
     class ArtificalNerualNetwork
     {
-        public float gainTerm = 0.5f;
+        /// <summary>
+        /// Gain term for training speed
+        /// </summary>
+        public float gainTerm = 0.1f;
 
-        private Neuron[][] neurons;
+        /// <summary>
+        /// All layers and enurons represented as a jagged 2d array.
+        /// </summary>
+        private Neuron[][] m_neurons;
 
-        private int layerCount { get { return neurons.Length; } }
+        /// <summary>
+        /// Layer count
+        /// </summary>
+        private int layerCount { get { return m_neurons.Length; } }
 
-        private Neuron[] inputLayer { get { return neurons[0]; } }
+        /// <summary>
+        /// Input layer
+        /// </summary>
+        private Neuron[] inputLayer { get { return m_neurons[0]; } }
 
-        private Neuron[] outputLayer { get { return neurons[layerCount - 1]; } }
+        /// <summary>
+        /// Output layer
+        /// </summary>
+        private Neuron[] outputLayer { get { return m_neurons[layerCount - 1]; } }
 
         public ArtificalNerualNetwork(int[] structure)
         {
@@ -20,26 +35,26 @@ namespace ANN
 
             System.Random rand = new System.Random();
 
-            neurons = new Neuron[structure.Length][];
+            m_neurons = new Neuron[structure.Length][];
             for (int layer = 0; layer < structure.Length; layer++)
             {
                 // create layer
-                neurons[layer] = new Neuron[structure[layer]];
+                m_neurons[layer] = new Neuron[structure[layer]];
 
                 // create neuron in layer
                 for (int n = 0; n < structure[layer]; n++)
                 {
-                    neurons[layer][n] = new Neuron();
+                    m_neurons[layer][n] = new Neuron();
 
                     // create weights if not output layer
                     if (layer + 1 >= structure.Length) continue;
 
-                    neurons[layer][n].weights = new float[structure[layer + 1]];
+                    m_neurons[layer][n].weights = new float[structure[layer + 1]];
 
-                    for (int w = 0; w < neurons[layer][n].weights.Length; w++)
+                    for (int w = 0; w < m_neurons[layer][n].weights.Length; w++)
                     {
-                        //neurons[layer][n].weights[w] = (float)(rand.Next(0, 10) - 5) / 100f;
-                        neurons[layer][n].weights[w] = 0.0f;
+                        m_neurons[layer][n].weights[w] = (float)(rand.Next(0, 10) - 5) / 100f;
+                        //m_neurons[layer][n].weights[w] = 0.0f;
                         //neurons[layer][n].weights[w] = (float)(rand.Next(0, 100)) / 100f;
                     }
                 }
@@ -54,7 +69,7 @@ namespace ANN
         public float[] Forward(float[] input)
         {
             // input must be same length as input layer
-            UnityEngine.Debug.Assert(input.Length == neurons[0].Length);
+            UnityEngine.Debug.Assert(input.Length == m_neurons[0].Length);
 
             float[][] results = Forward2(input);
 
@@ -75,12 +90,12 @@ namespace ANN
             // start at layer 0 (input)
             for (int layer = 0; layer < layerCount - 1; layer++)
             {
-                float[] sum = new float[neurons[layer + 1].Length];
+                float[] sum = new float[m_neurons[layer + 1].Length];
 
                 // input * weight for all neurons in current layer
-                for (int n = 0; n < neurons[layer].Length; n++)
+                for (int n = 0; n < m_neurons[layer].Length; n++)
                 {
-                    float[] weightedValues = neurons[layer][n].Process(results[layer][n]);
+                    float[] weightedValues = m_neurons[layer][n].Process(results[layer][n]);
 
                     for (int i = 0; i < sum.Length; i++)
                     {
@@ -96,7 +111,11 @@ namespace ANN
 
             return results;
         }
-
+        
+        /// <summary>
+        /// Trains the network with the items
+        /// </summary>
+        /// <param name="items"></param>
         public void Train(params TrainingItem[] items)
         {
             for (int i = 0; i < items.Length; i++)
@@ -105,18 +124,27 @@ namespace ANN
             }
         }
 
+        /// <summary>
+        /// Trains the network with one item
+        /// </summary>
+        /// <param name="item"></param>
         public void Train(TrainingItem item)
         {
             Train(item.input, item.expected);
         }
 
+        /// <summary>
+        /// Trains the network with input and expected values
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="expected"></param>
         public void Train(float[] input, float[] expected)
         {
             // input must be same length as input layer
-            UnityEngine.Debug.Assert(input.Length == neurons[0].Length);
+            UnityEngine.Debug.Assert(input.Length == m_neurons[0].Length);
 
             // expected must be same length as output layer
-            UnityEngine.Debug.Assert(expected.Length == neurons[layerCount - 1].Length);
+            UnityEngine.Debug.Assert(expected.Length == m_neurons[layerCount - 1].Length);
 
             // perform forward/eval
             float[][] results = Forward2(input);
@@ -133,11 +161,18 @@ namespace ANN
             }
         }
 
+        /// <summary>
+        /// Performs backpropagation
+        /// </summary>
+        /// <param name="layerIndex">Layer to back propagate from</param>
+        /// <param name="neuronIndex">Neuron in the layer to back propagate from</param>
+        /// <param name="error">Error value from test</param>
+        /// <param name="results">Results of all neurons after a test</param>
         private void BackProp(int layerIndex, int neuronIndex, float error, float[][] results)
         {
             if (layerIndex <= 0) return;
 
-            Neuron[] prevLayer = neurons[layerIndex - 1];
+            Neuron[] prevLayer = m_neurons[layerIndex - 1];
 
             for (int n = 0; n < prevLayer.Length; n++)
             {
@@ -171,7 +206,7 @@ namespace ANN
 
             for (int i = 0; i < arr.Length; i++)
             {
-                arr[i] = new float[neurons[i].Length];
+                arr[i] = new float[m_neurons[i].Length];
             }
 
             return arr;
@@ -179,8 +214,16 @@ namespace ANN
 
         class Neuron
         {
+            /// <summary>
+            /// Weights of this neuron
+            /// </summary>
             public float[] weights;
 
+            /// <summary>
+            /// Processes the value and outputs an array of weighted results.
+            /// </summary>
+            /// <param name="value"></param>
+            /// <returns></returns>
             public float[] Process(float value)
             {
                 float[] results = new float[weights.Length];
