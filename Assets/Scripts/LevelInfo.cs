@@ -9,8 +9,6 @@ public class LevelInfo
 
     public Vector2Int ghostSpawn;
 
-    public Vector2Int goal;
-
     public TileType[,] tiles;
 
     private List<Vector2Int> m_openTiles;

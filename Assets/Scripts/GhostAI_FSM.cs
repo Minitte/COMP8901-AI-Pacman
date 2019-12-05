@@ -85,7 +85,7 @@ public class GhostAI_FSM : MonoBehaviour
         if (m_pathFinder.arrived || !m_aquiredPlayer)
         {
             m_aquiredPlayer = true;
-            m_pathFinder.GoTo(m_player.GetComponent<Player>().coordinate);
+            m_pathFinder.GoTo(m_player.GetComponent<CharacterMovement>().coordinate);
         }
     }
 
@@ -97,10 +97,10 @@ public class GhostAI_FSM : MonoBehaviour
             m_pathFinder.GoTo(m_levelInfo.GetRandomOpenTile());
             m_stateUpdate = 0;
         }
-        else if (m_state == GhostState.CHASE)
+        else if (m_state == GhostState.WANDER)
         {
             m_aquiredPlayer = true;
-            m_pathFinder.GoTo(m_player.GetComponent<Player>().coordinate);
+            m_pathFinder.GoTo(m_player.GetComponent<CharacterMovement>().coordinate);
         }
     }
 }
