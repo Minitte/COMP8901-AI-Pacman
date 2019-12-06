@@ -11,7 +11,7 @@ namespace RuleSystem
 
         public Rule(string result, Condition[] conditions)
         {
-            this.result = result;
+            this.result = result.ToLower();
             this.conditions = conditions;
         }
 
@@ -21,7 +21,7 @@ namespace RuleSystem
         {
             for (int i = 0; i < conditions.Length; i++)
             {
-                if (!Eval(data)) return false;
+                if (!conditions[i].Eval(data)) return false;
             }
 
             return true;

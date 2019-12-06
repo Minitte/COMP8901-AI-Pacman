@@ -16,7 +16,7 @@ namespace RuleSystem
 
         public Condition(string conditionName, ConditionType condType, int expected)
         {
-            this.conditionName = conditionName;
+            this.conditionName = conditionName.ToLower();
             this.condType = condType;
             this.expected = expected;
         }

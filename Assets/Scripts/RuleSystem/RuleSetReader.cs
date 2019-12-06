@@ -18,7 +18,7 @@ namespace RuleSystem
             {
                 string line = sr.ReadLine();
 
-                rules.Add(PhaseRule(line));
+                rules.Add(PhaseRule(line.Trim()));
             }
 
             return rules.ToArray();
@@ -28,16 +28,16 @@ namespace RuleSystem
         {
             string[] cond_resu = s.Split(RESULT_SPLITER);
             string[] conds_str = cond_resu[0].Split(COND_SPLITER);
-            string result = cond_resu[1];
+            string result = cond_resu[1].Trim();
 
             Condition[] conditions = new Condition[conds_str.Length];
 
             int i = 0;
             foreach (string cond in conds_str)
             {
-                string[] args = cond.Split(' ');
+                string[] args = cond.Trim().Split(' ');
 
-                conditions[i++] = new Condition(args[0].ToLower(), ToConditionType(args[1]), int.Parse(args[2]));
+                conditions[i++] = new Condition(args[0].ToLower().Trim(), ToConditionType(args[1].Trim()), int.Parse(args[2]));
             }
 
             return new Rule(result, conditions);

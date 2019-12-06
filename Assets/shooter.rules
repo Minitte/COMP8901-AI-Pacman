@@ -1,0 +1,9 @@
+my_ammo = 0 & my_energy = 0 & my_ammo = 0 & my_energy = 0 & my_ammo = 0 & my_energy = 0 ? reload
+my_ammo > 0 & enemy_ammo = 0 & enemy_energy = 0 ? shoot
+my_ammo > 0 my_health > 1 & enemy_energy < 2 & enemy_health = 1 ? shoot
+my_ammo = 0 & enemy_ammo = 0 ? reload
+my_health > 1 & my_ammo > 0 ? shoot
+my_energy > 0 & enemy_ammo > 0 ? dodge
+my_ammo = 0 & my_health = 1 & my_energy < 2 ? reload
+my_ammo = 1 & enemy_energy > 1 ? reload
+my_ammo > 0 & my_energy = 0 & my_health = 1 & enemy_ammo > 0 ? shoot

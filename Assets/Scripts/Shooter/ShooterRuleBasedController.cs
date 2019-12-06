@@ -19,7 +19,7 @@ public class ShooterRuleBasedController : MonoBehaviour
 
     private void Awake()
     {
-        RuleSystem.Rule[] rules = RuleSystem.RuleSetReader.ReadRuleFile("shooter.rules");
+        RuleSystem.Rule[] rules = RuleSystem.RuleSetReader.ReadRuleFile("assets/shooter.rules");
         m_rbs = new RuleSystem.RuleSystem(rules);
     }
 
@@ -28,13 +28,13 @@ public class ShooterRuleBasedController : MonoBehaviour
         // convert to data
         Dictionary<string, int> data = new Dictionary<string, int>();
 
-        data.Add(DataNames.MY_AMMO.ToString(), me.ammoCount);
-        data.Add(DataNames.MY_ENERGY.ToString(), me.energyCount);
-        data.Add(DataNames.MY_HEALTH.ToString(), me.health);
+        data.Add(DataNames.MY_AMMO.ToString().ToLower(), me.ammoCount);
+        data.Add(DataNames.MY_ENERGY.ToString().ToLower(), me.energyCount);
+        data.Add(DataNames.MY_HEALTH.ToString().ToLower(), me.health);
 
-        data.Add(DataNames.ENEMY_AMMO.ToString(), enemy.ammoCount);
-        data.Add(DataNames.ENEMY_ENERGY.ToString(), enemy.energyCount);
-        data.Add(DataNames.ENEMY_HEALTH.ToString(), enemy.health);
+        data.Add(DataNames.ENEMY_AMMO.ToString().ToLower(), enemy.ammoCount);
+        data.Add(DataNames.ENEMY_ENERGY.ToString().ToLower(), enemy.energyCount);
+        data.Add(DataNames.ENEMY_HEALTH.ToString().ToLower(), enemy.health);
 
         // get results
         string output = m_rbs.Eval(data);
@@ -44,11 +44,11 @@ public class ShooterRuleBasedController : MonoBehaviour
         // no rule applicable..
         if (output == null) return ShooterChoice.WAITING;
 
-        if (output == ShooterChoice.SHOOT.ToString()) return ShooterChoice.SHOOT;
+        if (output.Equals(ShooterChoice.SHOOT.ToString().ToLower())) return ShooterChoice.SHOOT;
 
-        if (output == ShooterChoice.DODGE.ToString()) return ShooterChoice.DODGE;
+        if (output.Equals(ShooterChoice.DODGE.ToString().ToLower())) return ShooterChoice.DODGE;
 
-        if (output == ShooterChoice.RELOAD.ToString()) return ShooterChoice.RELOAD;
+        if (output.Equals(ShooterChoice.RELOAD.ToString().ToLower())) return ShooterChoice.RELOAD;
 
         Debug.Log("Rule system outputted an unknown value! " + output);
 
