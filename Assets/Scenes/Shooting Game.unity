@@ -180,7 +180,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Use Random
+  m_Text: Use Rule Based
 --- !u!222 &9306422
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1178,6 +1178,7 @@ GameObject:
   - component: {fileID: 1269055225}
   - component: {fileID: 1269055226}
   - component: {fileID: 1269055227}
+  - component: {fileID: 1269055228}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -1241,6 +1242,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a29315eee63d5d5418f4f88b97278afd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1269055228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269055223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d9666ff748835448958eeed50fda652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1276549569
