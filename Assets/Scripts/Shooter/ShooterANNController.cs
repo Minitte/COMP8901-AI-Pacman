@@ -16,11 +16,11 @@ public class ShooterANNController : MonoBehaviour
     {
         m_gameManager = GetComponent<ShooterGameManager>();
 
-        int[] structure = new int[] { 6, 5, 5, 3 };
+        int[] structure = new int[] { 6, 10, 10, 3 };
 
         m_ann = new ANN.ArtificalNerualNetwork(structure);
 
-        m_ann.gainTerm = 0.5f;
+        m_ann.gainTerm = 0.15f;
 
         m_gameManager.OnActPhase += RegisterChoice;
     }
