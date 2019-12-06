@@ -318,7 +318,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: N-Grams & Artifical Neural Networks
+  m_Text: 'N-Grams, Artifical Neural Networks
+
+    and Rule-Based Systems'
 --- !u!222 &949209617
 CanvasRenderer:
   m_ObjectHideFlags: 0
