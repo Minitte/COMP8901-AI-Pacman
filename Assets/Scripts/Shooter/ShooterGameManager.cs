@@ -26,7 +26,7 @@ public class ShooterGameManager : MonoBehaviour
 
     private GamePhase m_phase;
 
-    private enum PlayerMode { HUMAN, RAND, NGRAM, ANN }
+    private enum PlayerMode { HUMAN, RAND, RULE, NGRAM, ANN }
 
     private PlayerMode m_player2Mode;
 
@@ -34,10 +34,13 @@ public class ShooterGameManager : MonoBehaviour
 
     private ShooterANNController m_annController;
 
+    private ShooterRuleBasedController m_rbsController;
+
     private void Awake()
     {
         m_ngramControler = GetComponent<ShooterNGramController>();
         m_annController = GetComponent<ShooterANNController>();
+        m_rbsController = GetComponent<ShooterRuleBasedController>();
         ResetGame();
         SetMode(0);
     }
@@ -74,6 +77,11 @@ public class ShooterGameManager : MonoBehaviour
             case PlayerMode.RAND:
                 if (playerTwoChoice != ShooterChoice.WAITING) break;
                 playerTwoChoice = MakeRandomChoice(playerTwo);
+                break;
+
+            case PlayerMode.RULE:
+                if (playerTwoChoice != ShooterChoice.WAITING) break;
+                playerTwoChoice = RBSChoice(false);
                 break;
 
             case PlayerMode.NGRAM:
@@ -255,6 +263,21 @@ public class ShooterGameManager : MonoBehaviour
         }
 
         annText.text = "ANN: Made a choice.";
+
+        return choice;
+    }
+
+    private ShooterChoice RBSChoice(bool asPlayerOne)
+    {
+        ShooterController me = asPlayerOne ? playerOne : playerTwo;
+        ShooterController them = asPlayerOne ? playerTwo : playerOne;
+
+        ShooterChoice choice = m_rbsController.GetChoice(me, them);
+
+        if (choice == ShooterChoice.WAITING)
+        {
+            return MakeRandomChoice(me);
+        }
 
         return choice;
     }
