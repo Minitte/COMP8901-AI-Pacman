@@ -2,6 +2,7 @@
 
 namespace NGram
 {
+    
     public class NGramString
     {
         private const char COMBO_SPILTER = '/';
