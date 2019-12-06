@@ -28,6 +28,8 @@ public class ShooterController : MonoBehaviour
 
     public SpriteRenderer[] healthSprites;
 
+    public SpriteRenderer readySprite;
+
     [Header("Data")]
 
     public int ammoCount;
@@ -35,6 +37,8 @@ public class ShooterController : MonoBehaviour
     public int energyCount;
 
     public int health;
+
+    public bool isReady;
 
     public bool HasAmmo { get { return ammoCount != 0; } }
 
@@ -85,7 +89,7 @@ public class ShooterController : MonoBehaviour
         UpdateSprites();
     }
 
-    public void subtractHealth()
+    public void SubtractHealth()
     {
         if (health <= 0) return;
 
@@ -113,6 +117,9 @@ public class ShooterController : MonoBehaviour
             if (i < health) healthSprites[i].color = Color.red;
             else healthSprites[i].color = Color.black;
         }
+
+        if (isReady) readySprite.color = Color.green;
+        else readySprite.color = Color.black;
     }
 
     public void RunAnimation(ShooterChoice choice)

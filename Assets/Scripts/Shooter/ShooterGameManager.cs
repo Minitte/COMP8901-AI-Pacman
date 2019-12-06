@@ -59,19 +59,21 @@ public class ShooterGameManager : MonoBehaviour
 
             if (playerTwoChoice == ShooterChoice.WAITING)
             {
-                nGramStatus.text = "Unable to make prediction!";
-                playerTwoChoice = (ShooterChoice)Random.Range(1, 4);
-
-                if (playerTwoChoice == ShooterChoice.SHOOT && !playerTwo.HasAmmo) playerTwoChoice = ShooterChoice.WAITING;
-                if (playerTwoChoice == ShooterChoice.DODGE && !playerTwo.HasEnergy) playerTwoChoice = ShooterChoice.WAITING;
+                nGramStatus.text = "NGram: Not enough data. Using random choice.";
+                playerTwoChoice = MakeRandomChoice(playerTwo);
             }
             else
             {
-                nGramStatus.text = "Able to make prediction!";
+                nGramStatus.text = "NGram: Made choice based on data.";
             }
         }
 
-        if (playerOneChoice != ShooterChoice.WAITING && playerTwoChoice != ShooterChoice.WAITING)
+        playerOne.isReady = playerOneChoice != ShooterChoice.WAITING;
+        playerOne.UpdateSprites();
+        playerTwo.isReady = playerTwoChoice != ShooterChoice.WAITING;
+        playerTwo.UpdateSprites();
+
+        if (playerOne.isReady && playerTwo.isReady)
         {
             m_phase = GamePhase.ACT;
         }
@@ -85,13 +87,13 @@ public class ShooterGameManager : MonoBehaviour
         // resolve shooting
         if (playerOneChoice == ShooterChoice.SHOOT && playerTwoChoice != ShooterChoice.DODGE)
         {
-            if (playerOne.ammoCount >= 1) playerTwo.subtractHealth();
+            if (playerOne.ammoCount >= 1) playerTwo.SubtractHealth();
             //if (playerOne.ammoCount >= 2) playerTwo.subtractHealth();
         }
 
         if (playerTwoChoice == ShooterChoice.SHOOT && playerOneChoice != ShooterChoice.DODGE)
         {
-            if (playerTwo.ammoCount >= 1) playerOne.subtractHealth();
+            if (playerTwo.ammoCount >= 1) playerOne.SubtractHealth();
             //if (playerTwo.ammoCount >= 2) playerOne.subtractHealth();
         }
 
@@ -174,5 +176,28 @@ public class ShooterGameManager : MonoBehaviour
         playerTwoChoice = ShooterChoice.WAITING;
 
         endText.text = "";
+    }
+
+    private ShooterChoice MakeRandomChoice(ShooterController shooter)
+    {
+        ShooterChoice choice = (ShooterChoice)Random.Range(1, 4);
+
+        while (true)
+        {
+            // got shoot and have ammo
+            if (choice == ShooterChoice.SHOOT && shooter.HasAmmo) return choice;
+
+            // got dodge and have energy
+            if (choice == ShooterChoice.DODGE && shooter.HasEnergy) return choice;
+
+            if (choice == ShooterChoice.RELOAD) return choice;
+
+            choice++;
+
+            if ((int)choice >= 4)
+            {
+                choice = (ShooterChoice)1;
+            }
+        }
     }
 }
