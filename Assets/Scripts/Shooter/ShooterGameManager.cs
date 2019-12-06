@@ -18,16 +18,28 @@ public class ShooterGameManager : MonoBehaviour
 
     public Text endText;
 
+    public Text annText;
+
+    public Text p2ModeText;
+
     private enum GamePhase { CHOICE, ACT, POSTACT, END }
 
     private GamePhase m_phase;
 
+    private enum PlayerMode { HUMAN, RAND, NGRAM, ANN }
+
+    private PlayerMode m_player2Mode;
+
     private ShooterNGramController m_ngramControler;
+
+    private ShooterANNController m_annController;
 
     private void Awake()
     {
         m_ngramControler = GetComponent<ShooterNGramController>();
+        m_annController = GetComponent<ShooterANNController>();
         ResetGame();
+        SetMode(0);
     }
 
     private void Update()
@@ -38,6 +50,12 @@ public class ShooterGameManager : MonoBehaviour
         else if (m_phase == GamePhase.END) EndPhase();
     }
 
+    public void SetMode(int mode)
+    {
+        m_player2Mode = (PlayerMode)mode;
+        p2ModeText.text = m_player2Mode.ToString();
+    }
+
     private void ChoicePhase()
     {
         
@@ -46,14 +64,27 @@ public class ShooterGameManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha2) && playerOne.HasEnergy) playerOneChoice = ShooterChoice.DODGE;
         else if (Input.GetKeyDown(KeyCode.Alpha3)) playerOneChoice = ShooterChoice.RELOAD;
 
-        // Player 2 choice
-        //if (Input.GetKeyDown(KeyCode.Alpha8) && playerTwo.HasAmmo) playerTwoChoice = ShooterChoice.SHOOT;
-        //else if (Input.GetKeyDown(KeyCode.Alpha9) && playerTwo.HasEnergy) playerTwoChoice = ShooterChoice.DODGE;
-        //else if (Input.GetKeyDown(KeyCode.Alpha0)) playerTwoChoice = ShooterChoice.RELOAD;
-
-        if (playerTwoChoice == ShooterChoice.WAITING)
+        // player 2
+        switch (m_player2Mode)
         {
-            playerTwoChoice = NGramChoice();
+            case PlayerMode.HUMAN:
+                playerTwoChoice = P2HumanChoice();
+                break;
+
+            case PlayerMode.RAND:
+                if (playerTwoChoice != ShooterChoice.WAITING) break;
+                playerTwoChoice = MakeRandomChoice(playerTwo);
+                break;
+
+            case PlayerMode.NGRAM:
+                if (playerTwoChoice != ShooterChoice.WAITING) break;
+                playerTwoChoice = NGramChoice();
+                break;
+
+            case PlayerMode.ANN:
+                if (playerTwoChoice != ShooterChoice.WAITING) break;
+                playerTwoChoice = ANNChoice(false);
+                break;
         }
 
         playerOne.isReady = playerOneChoice != ShooterChoice.WAITING;
@@ -168,6 +199,8 @@ public class ShooterGameManager : MonoBehaviour
 
     private ShooterChoice MakeRandomChoice(ShooterController shooter)
     {
+        Debug.Log("Made random choice.");
+
         ShooterChoice choice = (ShooterChoice)Random.Range(1, 4);
 
         while (true)
@@ -189,15 +222,39 @@ public class ShooterGameManager : MonoBehaviour
         }
     }
 
+    private ShooterChoice P2HumanChoice()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha8) && playerTwo.HasAmmo) return ShooterChoice.SHOOT;
+        else if (Input.GetKeyDown(KeyCode.Alpha9) && playerTwo.HasEnergy) return ShooterChoice.DODGE;
+        else if (Input.GetKeyDown(KeyCode.Alpha0)) return ShooterChoice.RELOAD;
+
+        return playerTwoChoice;
+    }
+
     private ShooterChoice NGramChoice()
     {
         ShooterChoice choice = m_ngramControler.MakePrediction(false);
 
         // ngram failed to make a choice, defaulting random
+        if (choice == ShooterChoice.WAITING) return MakeRandomChoice(playerTwo);
+
+        return choice;
+    }
+
+    private ShooterChoice ANNChoice(bool asPlayerOne)
+    {
+        ShooterController me = asPlayerOne ? playerOne : playerTwo;
+        ShooterController them = asPlayerOne ? playerTwo : playerOne;
+
+        ShooterChoice choice = m_annController.Predict(me, them);
+
         if (choice == ShooterChoice.WAITING)
         {
-            choice = MakeRandomChoice(playerTwo);
+            annText.text = "ANN: Not enough training. Using random choice.";
+            return MakeRandomChoice(me);
         }
+
+        annText.text = "ANN: Made a choice.";
 
         return choice;
     }

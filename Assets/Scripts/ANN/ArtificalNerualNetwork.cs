@@ -2,7 +2,7 @@
 namespace ANN
 {
     [System.Serializable]
-    class ArtificalNerualNetwork
+    public class ArtificalNerualNetwork
     {
         /// <summary>
         /// Gain term for training speed
@@ -105,7 +105,8 @@ namespace ANN
                 }
 
                 // apply activation function
-                ApplyActivationFunction(sum, 1.5f);
+                //ApplyActivationFunction_Linear(sum, 1.5f);
+                ApplyActivationFunction_Sigmoid(sum);
 
                 results[layer + 1] = sum;
             }
@@ -145,7 +146,7 @@ namespace ANN
             UnityEngine.Debug.Assert(input.Length == m_neurons[0].Length);
 
             // expected must be same length as output layer
-            UnityEngine.Debug.Assert(expected.Length == m_neurons[layerCount - 1].Length);
+            UnityEngine.Debug.Assert(expected.Length == outputLayer.Length);
 
             // perform forward/eval
             float[][] results = Forward2(input);
@@ -188,12 +189,25 @@ namespace ANN
         /// </summary>
         /// <param name="arr"></param>
         /// <param name="upper"></param>
-        private void ApplyActivationFunction(float[] arr, float upper)
+        private void ApplyActivationFunction_Linear(float[] arr, float upper)
         {
             for (int i = 0; i < arr.Length; i++)
             {
                 if (arr[i] >= upper) arr[i] = 1;
                 else arr[i] = 0;
+            }
+        }
+
+        /// <summary>
+        /// Applies activation function
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <param name="upper"></param>
+        private void ApplyActivationFunction_Sigmoid(float[] arr)
+        {
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = 1f / (1f + UnityEngine.Mathf.Pow(2.71828f, arr[i]));
             }
         }
 
@@ -241,7 +255,7 @@ namespace ANN
     }
 
     [System.Serializable]
-    struct TrainingItem
+    public struct TrainingItem
     {
         public float[] input;
 
