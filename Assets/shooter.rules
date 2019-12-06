@@ -1,4 +1,4 @@
-my_ammo = 0 & my_energy = 0 & my_ammo = 0 & my_energy = 0 & my_ammo = 0 & my_energy = 0 ? reload
+my_ammo = 0 & my_energy = 0 ? reload
 my_ammo > 0 & enemy_ammo = 0 & enemy_energy = 0 ? shoot
 my_ammo > 0 my_health > 1 & enemy_energy < 2 & enemy_health = 1 ? shoot
 my_ammo = 0 & enemy_ammo = 0 ? reload
