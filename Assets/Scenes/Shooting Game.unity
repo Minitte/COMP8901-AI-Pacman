@@ -578,7 +578,6 @@ MonoBehaviour:
   playerOneChoice: 0
   playerTwoChoice: 0
   endText: {fileID: 1276549571}
-  nGramStatus: {fileID: 1747025868}
 --- !u!114 &1269055226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -591,6 +590,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74c46bd1ef3460e4181eb1ab19ef091f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nGramStatus: {fileID: 1747025868}
 --- !u!1 &1276549569
 GameObject:
   m_ObjectHideFlags: 0

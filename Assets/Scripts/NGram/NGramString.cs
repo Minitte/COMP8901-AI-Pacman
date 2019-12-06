@@ -68,7 +68,6 @@ namespace NGram
         {
             List<NGramSet> arr = new List<NGramSet>();
 
-            int i = 0;
             foreach (NGramSet set in m_combos.Values)
             {
                 arr.Add(set);

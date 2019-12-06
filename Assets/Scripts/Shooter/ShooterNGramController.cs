@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
+using UnityEngine.UI;
+
 public class ShooterNGramController : MonoBehaviour
 {
     public NGram.NGramString ngram;
+
+    public Text nGramStatus;
 
     private ShooterGameManager m_sgm;
 
@@ -62,7 +65,12 @@ public class ShooterNGramController : MonoBehaviour
         if (forPlayer1) prediction = ngram.Predict(ammo + energy + GetLastCombo(playerOneChoices, 2));
         else prediction = ngram.Predict(ammo + energy + GetLastCombo(playerTwoChoices, 2));
 
-        return StringToChoice(prediction);
+        ShooterChoice choice = StringToChoice(prediction);
+
+        if (choice == ShooterChoice.WAITING) nGramStatus.text = "NGram: Not enough data to make a choice.";
+        else nGramStatus.text = "NGram: Made choice based on data.";
+
+        return choice;
     }
 
     private string GetLastCombo(List<string> history, int n)

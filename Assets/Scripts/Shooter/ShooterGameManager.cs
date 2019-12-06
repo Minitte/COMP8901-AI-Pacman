@@ -18,8 +18,6 @@ public class ShooterGameManager : MonoBehaviour
 
     public Text endText;
 
-    public Text nGramStatus;
-
     private enum GamePhase { CHOICE, ACT, POSTACT, END }
 
     private GamePhase m_phase;
@@ -55,17 +53,7 @@ public class ShooterGameManager : MonoBehaviour
 
         if (playerTwoChoice == ShooterChoice.WAITING)
         {
-            playerTwoChoice = m_ngramControler.MakePrediction(false);
-
-            if (playerTwoChoice == ShooterChoice.WAITING)
-            {
-                nGramStatus.text = "NGram: Not enough data. Using random choice.";
-                playerTwoChoice = MakeRandomChoice(playerTwo);
-            }
-            else
-            {
-                nGramStatus.text = "NGram: Made choice based on data.";
-            }
+            playerTwoChoice = NGramChoice();
         }
 
         playerOne.isReady = playerOneChoice != ShooterChoice.WAITING;
@@ -199,5 +187,18 @@ public class ShooterGameManager : MonoBehaviour
                 choice = (ShooterChoice)1;
             }
         }
+    }
+
+    private ShooterChoice NGramChoice()
+    {
+        ShooterChoice choice = m_ngramControler.MakePrediction(false);
+
+        // ngram failed to make a choice, defaulting random
+        if (choice == ShooterChoice.WAITING)
+        {
+            choice = MakeRandomChoice(playerTwo);
+        }
+
+        return choice;
     }
 }
