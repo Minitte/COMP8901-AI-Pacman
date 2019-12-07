@@ -202,6 +202,8 @@ public class ShooterGameManager : MonoBehaviour
 
         m_phase = GamePhase.CHOICE;
 
+        m_player2Mode = (PlayerMode)Random.Range(1, 5);
+
         playerOne.UpdateSprites();
         playerTwo.UpdateSprites();
     }

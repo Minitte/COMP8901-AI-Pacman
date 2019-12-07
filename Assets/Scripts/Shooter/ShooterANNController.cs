@@ -22,7 +22,7 @@ public class ShooterANNController : MonoBehaviour
 
         m_ann.gainTerm = 0.15f;
 
-        //m_gameManager.OnActPhase += RegisterChoice;
+        m_gameManager.OnActPhase += RegisterChoice;
     }
 
     public void RegisterChoice()
