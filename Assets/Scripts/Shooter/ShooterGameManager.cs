@@ -49,6 +49,7 @@ public class ShooterGameManager : MonoBehaviour
         m_annController = GetComponent<ShooterANNController>();
         m_rbsController = GetComponent<ShooterRuleBasedController>();
         ResetGame();
+        m_player2Mode = PlayerMode.RULE;
         SetMode(2);
     }
 

@@ -4,6 +4,19 @@ using UnityEngine;
 
 public class ShooterRuleBasedController : MonoBehaviour
 {
+    private const string RULE_FILE_WEBGL =  "my_ammo = 0 & my_energy = 0 ? reload\n" +
+                                            "my_ammo > 0 & enemy_ammo = 0 & enemy_energy = 0 ? shoot\n" +
+                                            "my_ammo > 0 my_health > 1 & enemy_energy < 2 & enemy_health = 1 ? shoot\n" +
+                                            "my_ammo = 0 & enemy_ammo = 0 ? reload\n" +
+                                            "my_health > 1 & my_ammo > 0 ? shoot\n" +
+                                            "my_energy > 0 & enemy_ammo > 0 ? dodge\n" +
+                                            "my_ammo = 0 & my_health = 1 & my_energy < 2 ? reload\n" +
+                                            "my_ammo = 1 & enemy_energy > 1 ? reload\n" +
+                                            "my_ammo > 0 & my_energy = 0 & my_health = 1 & enemy_ammo > 0 ? shoot\n" +
+                                            "my_ammo > 1 & enemy_ammo = 0 & enemy_energy < 2 & enemy_health = 2 ? shoot\n" +
+                                            "my_ammo > 0 & my_energy < 3 & my_ammo < 3 & enemy_ammo = 0 & enemy_energy > 1 & enemy_health = 1 ? reload";
+
+
     private enum DataNames
     { 
         MY_AMMO,
@@ -19,9 +32,17 @@ public class ShooterRuleBasedController : MonoBehaviour
 
     private void Awake()
     {
-        RuleSystem.Rule[] rules = RuleSystem.RuleSetReader.ReadRuleFile("assets/shooter.rules");
+        RuleSystem.Rule[] rules = null;
+
+#if UNITY_WEBGL
+        rules = RuleSystem.RuleSetReader.ReadRuleString(RULE_FILE_WEBGL);
+#else
+        rules = RuleSystem.RuleSetReader.ReadRuleFile("assets/shooter.rules");
+#endif
+
         m_rbs = new RuleSystem.RuleSystem(rules);
     }
+
 
     public ShooterChoice GetChoice(ShooterController me, ShooterController enemy)
     {

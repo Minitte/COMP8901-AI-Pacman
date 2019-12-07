@@ -27,6 +27,24 @@ namespace RuleSystem
             return rules.ToArray();
         }
 
+        public static Rule[] ReadRuleString(string rulesStr)
+        {
+            List<Rule> rules = new List<Rule>();
+
+            StringReader sr = new StringReader(rulesStr);
+
+            while (sr.Peek() != -1)
+            {
+                string line = sr.ReadLine();
+
+                if (line.StartsWith(COMMENT_PREFIX)) continue;
+
+                rules.Add(PhaseRule(line.Trim()));
+            }
+
+            return rules.ToArray();
+        }
+
         public static Rule PhaseRule(string s)
         {
             string[] cond_resu = s.Split(RESULT_SPLITER);
