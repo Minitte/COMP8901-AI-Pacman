@@ -7,8 +7,6 @@ public class ShooterNGramController : MonoBehaviour
 {
     public NGram.NGramString ngram;
 
-    public Text nGramStatus;
-
     private ShooterGameManager m_sgm;
 
     private List<string> playerOneChoices;
@@ -66,9 +64,6 @@ public class ShooterNGramController : MonoBehaviour
         else prediction = ngram.Predict(ammo + energy + GetLastCombo(playerTwoChoices, 2));
 
         ShooterChoice choice = StringToChoice(prediction);
-
-        if (choice == ShooterChoice.WAITING) nGramStatus.text = "NGram: Not enough data to make a choice.";
-        else nGramStatus.text = "NGram: Made choice based on data.";
 
         return choice;
     }
