@@ -24,6 +24,8 @@ public class ShooterGameManager : MonoBehaviour
 
     public Button reloadBtn;
 
+    public Button resetBtn;
+
 
     private enum GamePhase { CHOICE, ACT, POSTACT, END }
 
@@ -57,7 +59,7 @@ public class ShooterGameManager : MonoBehaviour
         else if (m_phase == GamePhase.POSTACT) PostActPhase();
         else if (m_phase == GamePhase.END) EndPhase();
 
-        UpdateChoiceButtonsP1();
+        UpdateChoiceButtons();
     }
 
     public void SetMode(int mode)
@@ -178,8 +180,6 @@ public class ShooterGameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ResetGame();
-
-            m_phase = GamePhase.CHOICE;
         }
     }
 
@@ -199,6 +199,8 @@ public class ShooterGameManager : MonoBehaviour
         playerTwoChoice = ShooterChoice.WAITING;
 
         endText.text = "";
+
+        m_phase = GamePhase.CHOICE;
     }
 
     private void UpdateController(ShooterController controller, ShooterChoice choice)
@@ -222,12 +224,14 @@ public class ShooterGameManager : MonoBehaviour
         controller.RunAnimation(choice);
     }
 
-    private void UpdateChoiceButtonsP1()
+    private void UpdateChoiceButtons()
     {
         bool isChoicePhase = m_phase == GamePhase.CHOICE;
         shootBtn.interactable = isChoicePhase && playerOne.HasAmmo;
         dodgeBtn.interactable = isChoicePhase && playerOne.HasEnergy;
         reloadBtn.interactable = isChoicePhase;
+
+        resetBtn.gameObject.SetActive(m_phase == GamePhase.END);
     }
 
     private ShooterChoice MakeRandomChoice(ShooterController shooter)

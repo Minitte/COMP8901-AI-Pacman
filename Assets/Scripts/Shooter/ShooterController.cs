@@ -102,20 +102,20 @@ public class ShooterController : MonoBehaviour
     {
         for (int i = 0; i < ammoSprites.Length; i++)
         {
-            if (i < ammoCount) ammoSprites[i].color = Color.yellow;
-            else ammoSprites[i].color = Color.black;
+            if (i < ammoCount) ReturnSprite(ammoSprites[i]);
+            else PopSpriteOff(ammoSprites[i]);
         }
 
         for (int i = 0; i < energySprites.Length; i++)
         {
-            if (i < energyCount) energySprites[i].color = Color.green;
-            else energySprites[i].color = Color.black;
+            if (i < energyCount) ReturnSprite(energySprites[i]);
+            else PopSpriteOff(energySprites[i]);
         }
 
         for (int i = 0; i < healthSprites.Length; i++)
         {
-            if (i < health) healthSprites[i].color = Color.red;
-            else healthSprites[i].color = Color.black;
+            if (i < health) ReturnSprite(healthSprites[i]);
+            else PopSpriteOff(healthSprites[i]);
         }
 
         if (isReady) readySprite.color = Color.green;
@@ -126,5 +126,15 @@ public class ShooterController : MonoBehaviour
     {
         m_animator.SetInteger("Choice", (int)choice);
         m_animator.SetTrigger("Act");
+    }
+
+    private void PopSpriteOff(SpriteRenderer sr)
+    {
+        sr.GetComponent<RandomDropAnimation>().RunAnimation();
+    }
+
+    private void ReturnSprite(SpriteRenderer sr)
+    {
+        sr.GetComponent<RandomDropAnimation>().ResetAnimation();
     }
 }
