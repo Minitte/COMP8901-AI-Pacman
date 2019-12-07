@@ -18,6 +18,8 @@ public class ShooterGameManager : MonoBehaviour
 
     public Text endText;
 
+    public Text scoreText;
+
     public Button shootBtn;
 
     public Button dodgeBtn;
@@ -25,7 +27,6 @@ public class ShooterGameManager : MonoBehaviour
     public Button reloadBtn;
 
     public Button resetBtn;
-
 
     private enum GamePhase { CHOICE, ACT, POSTACT, END }
 
@@ -44,6 +45,7 @@ public class ShooterGameManager : MonoBehaviour
     private float m_time;
 
     private int playerOneScore;
+
     private int playerTwoScore;
 
     private void Awake()
@@ -148,22 +150,6 @@ public class ShooterGameManager : MonoBehaviour
         UpdateController(playerOne, playerOneChoice);
         UpdateController(playerTwo, playerTwoChoice);
 
-        // tie
-        if (!playerOne.HasHealth && !playerTwo.HasHealth)
-        {
-            endText.text = "TIE!\n[SPACE]";
-        }
-        // player two wins
-        else if (!playerOne.HasHealth)
-        {
-            endText.text = "PLAYER TWO WINS!\n[SPACE]";
-        }
-        // player one wins
-        else if (!playerTwo.HasHealth)
-        {
-            endText.text = "PLAYER ONE WINS!\n[SPACE]";
-        }
-
         if (!playerOne.HasHealth || !playerTwo.HasHealth) m_phase = GamePhase.END;
         else m_phase = GamePhase.POSTACT;
         
@@ -181,6 +167,26 @@ public class ShooterGameManager : MonoBehaviour
 
     private void EndPhase()
     {
+        // tie
+        if (!playerOne.HasHealth && !playerTwo.HasHealth)
+        {
+            endText.text = "TIE!\n[SPACE]";
+        }
+        // player two wins
+        else if (!playerOne.HasHealth)
+        {
+            endText.text = "PLAYER TWO WINS!\n[SPACE]";
+            playerTwoScore++;
+        }
+        // player one wins
+        else if (!playerTwo.HasHealth)
+        {
+            endText.text = "PLAYER ONE WINS!\n[SPACE]";
+            playerOneScore++;
+        }
+
+        scoreText.text = playerOneScore + " : " + playerTwoScore;
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ResetGame();
