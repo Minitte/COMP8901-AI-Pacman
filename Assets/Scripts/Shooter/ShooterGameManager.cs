@@ -204,6 +204,8 @@ public class ShooterGameManager : MonoBehaviour
 
         m_player2Mode = (PlayerMode)Random.Range(1, 5);
 
+        Debug.Log("Player 2 set to " + m_player2Mode.ToString());
+
         playerOne.UpdateSprites();
         playerTwo.UpdateSprites();
     }
