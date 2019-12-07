@@ -18,10 +18,6 @@ public class ShooterGameManager : MonoBehaviour
 
     public Text endText;
 
-    public Text annText;
-
-    public Text p2ModeText;
-
     private enum GamePhase { CHOICE, ACT, POSTACT, END }
 
     private GamePhase m_phase;
@@ -56,7 +52,6 @@ public class ShooterGameManager : MonoBehaviour
     public void SetMode(int mode)
     {
         m_player2Mode = (PlayerMode)mode;
-        p2ModeText.text = m_player2Mode.ToString();
     }
 
     private void ChoicePhase()
@@ -258,11 +253,8 @@ public class ShooterGameManager : MonoBehaviour
 
         if (choice == ShooterChoice.WAITING)
         {
-            annText.text = "ANN: Not enough training. Using random choice.";
             return MakeRandomChoice(me);
         }
-
-        annText.text = "ANN: Made a choice.";
 
         return choice;
     }

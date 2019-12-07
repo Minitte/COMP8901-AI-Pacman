@@ -26,7 +26,7 @@ public class ShooterNGramController : MonoBehaviour
 
         m_sgm = GetComponent<ShooterGameManager>();
 
-        m_sgm.OnActPhase += RegisterChoice;
+        //m_sgm.OnActPhase += RegisterChoice;
     }
 
     public void RegisterChoice()
