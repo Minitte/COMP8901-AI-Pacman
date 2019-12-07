@@ -9,7 +9,7 @@ namespace PathFinding
     public static class AStar
     {
         // https://www.redblobgames.com/pathfinding/a-star/introduction.html#astar
-        public static List<Vector2Int> FindPath(TileType[,] map, Vector2Int start, Vector2Int end)
+        public static List<Vector2Int> FindPath(bool[,] map, Vector2Int start, Vector2Int end)
         {
             PriorityQueue<Vector2Int> frontier = new PriorityQueue<Vector2Int>();
             Dictionary<Vector2Int, Vector2Int> came_from = new Dictionary<Vector2Int, Vector2Int>();
@@ -32,7 +32,7 @@ namespace PathFinding
                 foreach (Vector2Int neighbour in neighbours)
                 {
                     // skip wall
-                    if (IsWall(map[neighbour.x, neighbour.y])) continue;
+                    if (map[neighbour.x, neighbour.y]) continue;
 
                     int cost = cost_so_far[cur] + 1;
 
@@ -62,12 +62,7 @@ namespace PathFinding
             return ConstructPath(came_from, start, end);
         }
 
-        private static bool IsWall(TileType t)
-        {
-            return t == TileType.WALL;
-        }
-
-        private static Vector2Int[] GetNeighbours(TileType[,] map, Vector2Int pos)
+        private static Vector2Int[] GetNeighbours(bool[,] map, Vector2Int pos)
         {
             int n = 0;
             Vector2Int[] neighbours = new Vector2Int[4];
