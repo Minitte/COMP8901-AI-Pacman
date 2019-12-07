@@ -6,7 +6,7 @@ public class ShooterController : MonoBehaviour
 {
     public const int MAX_AMMO = 3;
 
-    public const int MAX_ENERGY = 3;
+    public const int MAX_ENERGY = 2;
 
     [Header("Shooter Sprites")]
 
@@ -120,6 +120,9 @@ public class ShooterController : MonoBehaviour
 
         if (isReady) readySprite.color = Color.green;
         else readySprite.color = Color.black;
+
+        if (!HasHealth) PopSpriteOff(shooterSprite);
+        else ReturnSprite(shooterSprite);
     }
 
     public void RunAnimation(ShooterChoice choice)
@@ -130,11 +133,13 @@ public class ShooterController : MonoBehaviour
 
     private void PopSpriteOff(SpriteRenderer sr)
     {
-        sr.GetComponent<RandomDropAnimation>().RunAnimation();
+        RandomDropAnimation rda = sr.GetComponent<RandomDropAnimation>();
+        rda?.RunAnimation();
     }
 
     private void ReturnSprite(SpriteRenderer sr)
     {
-        sr.GetComponent<RandomDropAnimation>().ResetAnimation();
+        RandomDropAnimation rda = sr.GetComponent<RandomDropAnimation>();
+        rda?.ResetAnimation();
     }
 }

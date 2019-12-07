@@ -37,12 +37,13 @@ public class RandomDropAnimation : MonoBehaviour
 
     public void RunAnimation()
     {
-        if (animationRunning) return;
+        if (animationRunning || !gameObject.activeSelf) return;
 
         if (!m_initalized) m_originalPos = this.transform.position;
 
         m_rb.bodyType = RigidbodyType2D.Dynamic;
         m_rb.velocity = new Vector2(Random.Range(-2f, 2f), Random.Range(1f, 4f));
+        m_rb.angularVelocity = Random.Range(-90, 90f);
 
         this.transform.position = m_originalPos;
 
@@ -51,7 +52,7 @@ public class RandomDropAnimation : MonoBehaviour
 
     public void ResetAnimation()
     {
-        if (!animationRunning) return;
+        if (!animationRunning || !gameObject.activeSelf) return;
 
         if (!m_initalized) m_originalPos = this.transform.position;
 

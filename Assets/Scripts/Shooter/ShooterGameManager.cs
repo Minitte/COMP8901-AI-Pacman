@@ -183,7 +183,7 @@ public class ShooterGameManager : MonoBehaviour
         }
     }
 
-    private void ResetGame()
+    public void ResetGame()
     {
         playerOne.ammoCount = 1;
         playerOne.energyCount = 2;
@@ -201,6 +201,9 @@ public class ShooterGameManager : MonoBehaviour
         endText.text = "";
 
         m_phase = GamePhase.CHOICE;
+
+        playerOne.UpdateSprites();
+        playerTwo.UpdateSprites();
     }
 
     private void UpdateController(ShooterController controller, ShooterChoice choice)
