@@ -2457,6 +2457,9 @@ MonoBehaviour:
     Reduce your enemy''s health to 0
 
 
+    You = left
+
+
     Shoot = deal 1 damage
 
 

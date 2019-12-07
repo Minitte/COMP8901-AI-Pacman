@@ -43,6 +43,9 @@ public class ShooterGameManager : MonoBehaviour
 
     private float m_time;
 
+    private int playerOneScore;
+    private int playerTwoScore;
+
     private void Awake()
     {
         m_ngramControler = GetComponent<ShooterNGramController>();
@@ -203,7 +206,7 @@ public class ShooterGameManager : MonoBehaviour
 
         m_phase = GamePhase.CHOICE;
 
-        m_player2Mode = (PlayerMode)Random.Range(1, 5);
+        m_player2Mode = (PlayerMode)Random.Range(1, 4);
 
         Debug.Log("Player 2 set to " + m_player2Mode.ToString());
 
@@ -281,7 +284,7 @@ public class ShooterGameManager : MonoBehaviour
         ShooterChoice choice = m_ngramControler.MakePrediction(false);
 
         // ngram failed to make a choice, defaulting random
-        if (choice == ShooterChoice.WAITING) return MakeRandomChoice(playerTwo);
+        if (choice == ShooterChoice.WAITING) return RBSChoice(playerTwo);
 
         return choice;
     }

@@ -14,6 +14,8 @@ public class ShooterANNController : MonoBehaviour
 
     private void Awake()
     {
+        return;
+
         m_gameManager = GetComponent<ShooterGameManager>();
 
         int[] structure = new int[] { 6, 10, 10, 3 };
