@@ -5,6 +5,7 @@ namespace RuleSystem
 {
     public static class RuleSetReader
     {
+        public const string COMMENT_PREFIX = "//";
         public const char RESULT_SPLITER = '?';
         public const char COND_SPLITER = '&';
 
@@ -17,6 +18,8 @@ namespace RuleSystem
             while (!sr.EndOfStream)
             {
                 string line = sr.ReadLine();
+
+                if (line.StartsWith(COMMENT_PREFIX)) continue;
 
                 rules.Add(PhaseRule(line.Trim()));
             }

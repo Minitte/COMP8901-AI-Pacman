@@ -7,3 +7,5 @@ my_energy > 0 & enemy_ammo > 0 ? dodge
 my_ammo = 0 & my_health = 1 & my_energy < 2 ? reload
 my_ammo = 1 & enemy_energy > 1 ? reload
 my_ammo > 0 & my_energy = 0 & my_health = 1 & enemy_ammo > 0 ? shoot
+my_ammo > 1 & enemy_ammo = 0 & enemy_energy < 2 & enemy_health = 2 ? shoot
+my_ammo > 0 & my_energy < 3 & my_ammo < 3 & enemy_ammo = 0 & enemy_energy > 1 & enemy_health = 1 ? reload

@@ -18,6 +18,13 @@ public class ShooterGameManager : MonoBehaviour
 
     public Text endText;
 
+    public Button shootBtn;
+
+    public Button dodgeBtn;
+
+    public Button reloadBtn;
+
+
     private enum GamePhase { CHOICE, ACT, POSTACT, END }
 
     private GamePhase m_phase;
@@ -32,13 +39,15 @@ public class ShooterGameManager : MonoBehaviour
 
     private ShooterRuleBasedController m_rbsController;
 
+    private float m_time;
+
     private void Awake()
     {
         m_ngramControler = GetComponent<ShooterNGramController>();
         m_annController = GetComponent<ShooterANNController>();
         m_rbsController = GetComponent<ShooterRuleBasedController>();
         ResetGame();
-        SetMode(0);
+        SetMode(2);
     }
 
     private void Update()
@@ -47,11 +56,22 @@ public class ShooterGameManager : MonoBehaviour
         else if (m_phase == GamePhase.ACT) ActPhase();
         else if (m_phase == GamePhase.POSTACT) PostActPhase();
         else if (m_phase == GamePhase.END) EndPhase();
+
+        UpdateChoiceButtonsP1();
     }
 
     public void SetMode(int mode)
     {
         m_player2Mode = (PlayerMode)mode;
+    }
+
+    public void TrySetChoiceP1(int choiceInt)
+    {
+        ShooterChoice choice = (ShooterChoice)choiceInt;
+
+        if (choice == ShooterChoice.SHOOT && playerOne.HasAmmo) playerOneChoice = ShooterChoice.SHOOT;
+        else if (choice == ShooterChoice.DODGE && playerOne.HasEnergy) playerOneChoice = ShooterChoice.DODGE;
+        else if (choice == ShooterChoice.RELOAD) playerOneChoice = ShooterChoice.RELOAD;
     }
 
     private void ChoicePhase()
@@ -125,17 +145,17 @@ public class ShooterGameManager : MonoBehaviour
         // tie
         if (!playerOne.HasHealth && !playerTwo.HasHealth)
         {
-            endText.text = "TIE!";
+            endText.text = "TIE!\n[SPACE]";
         }
         // player two wins
         else if (!playerOne.HasHealth)
         {
-            endText.text = "PLAYER TWO WINS!";
+            endText.text = "PLAYER TWO WINS!\n[SPACE]";
         }
         // player one wins
         else if (!playerTwo.HasHealth)
         {
-            endText.text = "PLAYER ONE WINS!";
+            endText.text = "PLAYER ONE WINS!\n[SPACE]";
         }
 
         if (!playerOne.HasHealth || !playerTwo.HasHealth) m_phase = GamePhase.END;
@@ -143,29 +163,10 @@ public class ShooterGameManager : MonoBehaviour
         
     }
 
-    private void UpdateController(ShooterController controller, ShooterChoice choice)
-    {
-        switch (choice)
-        {
-            case ShooterChoice.SHOOT:
-                controller.SubtractAmmo();
-                break;
-
-            case ShooterChoice.DODGE:
-                controller.SubtractEnergy();
-                break;
-
-            case ShooterChoice.RELOAD:
-                controller.AddAmmo();
-                controller.AddEnergy();
-                break;
-        }
-
-        controller.RunAnimation(choice);
-    }
-
     private void PostActPhase()
     {
+        if (WaitUpdate(0.75f)) return;
+
         playerOneChoice = ShooterChoice.WAITING;
         playerTwoChoice = ShooterChoice.WAITING;
 
@@ -198,6 +199,35 @@ public class ShooterGameManager : MonoBehaviour
         playerTwoChoice = ShooterChoice.WAITING;
 
         endText.text = "";
+    }
+
+    private void UpdateController(ShooterController controller, ShooterChoice choice)
+    {
+        switch (choice)
+        {
+            case ShooterChoice.SHOOT:
+                controller.SubtractAmmo();
+                break;
+
+            case ShooterChoice.DODGE:
+                controller.SubtractEnergy();
+                break;
+
+            case ShooterChoice.RELOAD:
+                controller.AddAmmo();
+                controller.AddEnergy();
+                break;
+        }
+
+        controller.RunAnimation(choice);
+    }
+
+    private void UpdateChoiceButtonsP1()
+    {
+        bool isChoicePhase = m_phase == GamePhase.CHOICE;
+        shootBtn.interactable = isChoicePhase && playerOne.HasAmmo;
+        dodgeBtn.interactable = isChoicePhase && playerOne.HasEnergy;
+        reloadBtn.interactable = isChoicePhase;
     }
 
     private ShooterChoice MakeRandomChoice(ShooterController shooter)
@@ -272,5 +302,18 @@ public class ShooterGameManager : MonoBehaviour
         }
 
         return choice;
+    }
+
+    private bool WaitUpdate(float wait)
+    {
+        m_time += Time.deltaTime;
+
+        if (m_time > wait)
+        {
+            m_time = 0;
+            return false;
+        }
+
+        return true;
     }
 }
