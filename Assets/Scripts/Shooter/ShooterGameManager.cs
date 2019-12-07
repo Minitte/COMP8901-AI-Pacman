@@ -150,23 +150,6 @@ public class ShooterGameManager : MonoBehaviour
         UpdateController(playerOne, playerOneChoice);
         UpdateController(playerTwo, playerTwoChoice);
 
-        if (!playerOne.HasHealth || !playerTwo.HasHealth) m_phase = GamePhase.END;
-        else m_phase = GamePhase.POSTACT;
-        
-    }
-
-    private void PostActPhase()
-    {
-        if (WaitUpdate(0.75f)) return;
-
-        playerOneChoice = ShooterChoice.WAITING;
-        playerTwoChoice = ShooterChoice.WAITING;
-
-        m_phase = GamePhase.CHOICE;
-    }
-
-    private void EndPhase()
-    {
         // tie
         if (!playerOne.HasHealth && !playerTwo.HasHealth)
         {
@@ -186,6 +169,24 @@ public class ShooterGameManager : MonoBehaviour
         }
 
         scoreText.text = playerOneScore + " : " + playerTwoScore;
+
+        if (!playerOne.HasHealth || !playerTwo.HasHealth) m_phase = GamePhase.END;
+        else m_phase = GamePhase.POSTACT;
+        
+    }
+
+    private void PostActPhase()
+    {
+        if (WaitUpdate(0.75f)) return;
+
+        playerOneChoice = ShooterChoice.WAITING;
+        playerTwoChoice = ShooterChoice.WAITING;
+
+        m_phase = GamePhase.CHOICE;
+    }
+
+    private void EndPhase()
+    {
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
